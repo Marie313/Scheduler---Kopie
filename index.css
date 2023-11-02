@@ -1,0 +1,129 @@
+h1{
+    color:rgb(0, 0, 0);    
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content:left;
+}
+body{
+    background-color: rgb(255, 255, 255);
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+}
+button{
+    width: 150px;
+    height: 25px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(235, 235, 235);
+    border-color: rgb(235, 235, 235);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.thButton button{
+    background-color: rgb(220, 220, 220);
+    width: 30px;
+}
+.thButton{
+    display: inline;
+}
+.text{
+    display: inline;
+}
+.box{
+    padding-left: 15px;
+    padding-top: 3px;
+    width: 200px;
+    height: 25px;
+    margin-top: -1.7%;
+    margin-bottom: 0%;
+    margin-left: 15%;
+    margin-right: 10%;
+    background-color: rgb(235, 235, 235);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.input input{
+    width: 300px;
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+select{
+    width: 150px;
+    height: 25px;
+    background-color: rgb(235, 235, 235);
+}
+table{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    margin-top: 30px;
+    background-color: rgb(235, 235, 235);
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0px 5px;
+}
+th{
+    background-color: rgb(220, 220, 220);
+    padding: 10px;
+    border: 2px solid rgb(235, 235, 235);
+}
+td{
+    text-align: center;
+    border-left: none;
+    padding-bottom: 15px;
+}
+th, td{
+    border-bottom: 1px solid rgba(235, 235, 235, 0.8);
+}
+svg{
+    margin-right: 20px;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.delete{
+    display: inline;
+}
+.edit{
+    display: inline;
+}
+.delete button{
+    width: 30px;
+    border: none;
+    background-color: rgba(240, 241, 255, 0);
+}
+button:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(107, 107, 107);
+}
+
+tr:nth-child(2){
+    background-color: rgba(135, 255, 135, 0.8);
+}
+tr:nth-child(3){
+    background-color: rgb(135, 255, 135, 0.8);
+}
+tr:nth-child(7){
+    background-color: rgb(135, 255, 135,0.8);
+}
+tr:nth-child(8){
+    background-color: rgb(135, 255, 135, 0.8);
+}
+tr:nth-child(4){
+    background-color: rgb(255, 255, 121, 0.7);
+}
+tr:nth-child(6){
+    background-color: rgb(197, 101, 101, 0.8);
+}
+input{
+    width: 50px;
+    height: 20px;
+}
