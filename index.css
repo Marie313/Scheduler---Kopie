@@ -21,6 +21,12 @@ button{
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: 0.4s;
+}
+button:hover{
+    border-radius: 8px;
+    color: rgb(235, 235, 235);
+    background-color: rgb(128, 128, 128);
 }
 .thButton button{
     background-color: rgb(220, 220, 220);
@@ -103,9 +109,6 @@ a{
 .delete button:hover{
     background-color: rgba(61, 255, 61, 0);
 }
-button:hover{
-    background-color: rgb(177, 177, 177);
-}
 input{
     width: 50px;
     height: 20px;
@@ -114,9 +117,20 @@ select{
     cursor: pointer;
 }
 .create{
-    display: flex;
-    justify-content:left;
+    text-align: right;
+}
+.create button{
+    width: 140px;
+    height: 40px;
+    font-size: 16px;
+    transition: 0.4s;
+}
+.create button:hover{
+    border-radius: 12px;
+    color: rgb(235, 235, 235);
+    background-color: rgb(128, 128, 128);
 }
 .thButton button:hover{
     background-color: rgb(177, 177, 177);
+    border-radius: 2px;
 }

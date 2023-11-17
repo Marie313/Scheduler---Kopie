@@ -70,25 +70,29 @@ const allJobs = [
         backgroundColor: "rgba(61, 255, 61, 0.75)"
     }
 ];
-// Anzeigen der Jobs in der Tabelle
-const jobDetailsTableBody = document.getElementById('jobTable');
+    const jobDetailsTableBody = document.getElementById('jobTable');
 
     allJobs.forEach(job => {
     const jobDetailRow = document.createElement('tr');
     jobDetailRow.className = 'job-detail';
 
     const jobDetailCells = [
-        { value: job.id},
-        { value: job.name},
-        { 
-            value: `<input type="checkbox" class="enabled-checkbox" ${job.enabled ? 'checked' : ''} disabled>`
+        { value: job.id },
+        { value: job.name },
+        {
+            value: `
+                <div>
+                    <input type="checkbox" class="my-checkbox" ${job.enabled ? 'checked' : ''}>
+                    <p class="message">${job.enabled ? 'true' : 'false'}</p>
+                </div>
+            `,
         },
         { value: job.lastRun },
         { value: job.nextRun },
-        { 
+        {
             value: `
-                    <div class="edit"><a href="edit.html?id=${job.id}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
-                    <div class="delete"><button onClick="alert('really want to delete this process?')" class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
+                <div class="edit"><a href="edit.html?id=${job.id}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
+                <div class="delete"><button onClick="alert('really want to delete this process?')" class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
             `,
         },
     ];
@@ -103,6 +107,18 @@ const jobDetailsTableBody = document.getElementById('jobTable');
     jobDetailRow.style.backgroundColor = job.backgroundColor || '';
 
     jobDetailsTableBody.appendChild(jobDetailRow);
+
+    var checkbox = document.querySelectorAll(".my-checkbox");
+    var message = document.querySelectorAll(".message");
+    checkbox.forEach(function(checkbox, index){
+        checkbox.addEventListener('change', function(){
+            if (checkbox.checked) {
+                message[index].textContent = 'true';
+            } else {
+                message[index].textContent = 'false';
+            }
+        });
+    });
 });
 
 var deleteButton = document.querySelectorAll('.deleteButton')

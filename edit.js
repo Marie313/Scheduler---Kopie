@@ -131,3 +131,7 @@ checkbox.forEach(function(checkbox, index){
             message[index].textContent='false'}
     });
 });
+
+function redirectToScheduler(){
+    window.location.href= 'index.html'
+}
