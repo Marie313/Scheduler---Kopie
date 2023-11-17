@@ -46,7 +46,7 @@ button{
     font-family: Arial, Helvetica, sans-serif;
 }
 .input input{
-    width: 300px;
+    width: 218px;
     height: 25px;
     margin-top: 5px;
     margin-bottom: 0%;
@@ -98,32 +98,25 @@ a{
 .delete button{
     width: 30px;
     border: none;
-    background-color: rgba(240, 241, 255, 0);
+    background-color: rgba(249, 249, 249, 0);
+}
+.delete button:hover{
+    background-color: rgba(61, 255, 61, 0);
 }
 button:hover{
-    color: rgb(255, 255, 255);
-    background-color: rgb(107, 107, 107);
-}
-
-tr:nth-child(2){
-    background-color: rgba(135, 255, 135, 0.8);
-}
-tr:nth-child(3){
-    background-color: rgb(135, 255, 135, 0.8);
-}
-tr:nth-child(7){
-    background-color: rgb(135, 255, 135,0.8);
-}
-tr:nth-child(8){
-    background-color: rgb(135, 255, 135, 0.8);
-}
-tr:nth-child(4){
-    background-color: rgb(255, 255, 121, 0.7);
-}
-tr:nth-child(6){
-    background-color: rgb(197, 101, 101, 0.8);
+    background-color: rgb(177, 177, 177);
 }
 input{
     width: 50px;
     height: 20px;
+}
+select{
+    cursor: pointer;
+}
+.create{
+    display: flex;
+    justify-content:left;
+}
+.thButton button:hover{
+    background-color: rgb(177, 177, 177);
 }

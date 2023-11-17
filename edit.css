@@ -4,18 +4,47 @@ body{
     font-size: 20px;
     padding: 50px 100px;
 }
-button{
-    background-color: rgb(255, 255, 255);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
-    padding-top: 20px;
-}
 h1{
-    padding-bottom: 5px;
+    padding-bottom: 0px;
 }
 input{
     cursor: pointer;
-    height: 20px;
+    height: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    display: flex;
+    padding-top: 10px;
+}
+label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.593);
+}
+a{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    width: 10px;
+}
+.back{
+    padding-top: 20px;
+}
+.back a{
+    background-color: rgba(0, 0, 0, 0.593);
+    color: white;
+}
+.checkbox{
+    padding-top: 0px;
+    padding-left: 18px;
+}
+.checkbox input{
+    width: 30px;
+}
+.message{
+    padding-left: 10px;
+    color: rgba(0, 0, 0, 0.593);
+    font-size: 18px;
 }
