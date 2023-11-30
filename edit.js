@@ -1,3 +1,4 @@
+//edit.js
 // Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');

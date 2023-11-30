@@ -1,3 +1,4 @@
+//index.js
 // Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
@@ -118,7 +119,6 @@ deleteButton.forEach(function(button){
         row.remove();
     });
 });
-
 
 // Event-Listener für die Selectbox hinzufügen
 var filterSelect = document.getElementById("selectbox");
