@@ -104,13 +104,17 @@ if (selectedVariableId) {
         `;
         // Anzeigen der Details der ausgewählten Variable auf der Seite
         jobDetails.innerHTML = `
+            <u><h1>Edit</h1></u>
             <p>ID: ${selectedJob.id}</p>
             <label>Name: </label><input value=${selectedJob.name}>
             ${checkboxHtml}
             <p>Status: ${selectedJob.status}</p>
             <label>First Run: </label><input type="datetime-local" value=${selectedJob.firstRun}>
+            <br>
             <label>Next Run: </label><input type="datetime-local" value=${selectedJob.nextRun}>
+            <br>
             <label>Last Run: </label><input type="datetime-local" value=${selectedJob.lastRun}>
+            <br>
             <label>Interval: </label> <input value=${selectedJob.interval}>
         `;
     } else {
