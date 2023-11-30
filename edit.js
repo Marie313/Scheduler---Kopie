@@ -73,6 +73,16 @@ const allJobs = [
         nextRun: "",
         lastRun: "2015-12-30T04:24",
         interval: ""
+    },
+    {
+        id: 0,
+        name: "",
+        enabled: false,
+        status: "none",
+        firstRun: "",
+        nextRun: "",
+        lastRun: "",
+        interval: ""
     }
 ];
 

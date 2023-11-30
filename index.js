@@ -1,13 +1,3 @@
-var checkbox = document.querySelectorAll(".my-checkbox");
-var message = document.querySelectorAll(".message");
-checkbox.forEach(function(checkbox, index){
-    checkbox.addEventListener('change',function(){
-        if (checkbox.checked){
-            message[index].textContent='Enabled'}
-        else {
-            message[index].textContent='Disabled'}
-    });
-});
 // Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
@@ -24,7 +14,7 @@ const allJobs = [
     },
     {
         id: 2023,
-        name: "Beispie_2",
+        name: "Beispiel_2",
         enabled: true,
         lastRun: "2023-06-14T22:24",
         nextRun: "2023-12-14T22:24",
@@ -32,11 +22,11 @@ const allJobs = [
     },
     {
         id: 5678,
-        name: "Beispie_3",
+        name: "Beispiel_3",
         enabled: true,
         lastRun: "2023-09-12T10:19",
         nextRun: "2023-11-12T10:15",
-        backgroundColor: "rgb(255, 252, 71, 0.8)"
+        backgroundColor: "rgba(255, 252, 71, 0.8)"
     },
     {
         id: 1010,
@@ -51,7 +41,7 @@ const allJobs = [
         enabled: true,
         lastRun: "2023-10-08T09:35",
         nextRun: "2023-10-18T09:35",
-        backgroundColor: "rgba(255, 66, 66, 0.726)"
+        backgroundColor: "rgba(255, 66, 66, 0.73)"
     },
     {
         id: 9876,
@@ -59,7 +49,7 @@ const allJobs = [
         enabled: true,
         lastRun: "2023-10-12T10:01",
         nextRun: "2023-10-13T10:02",
-        backgroundColor: "rgb(61,255, 61, 0.75)"
+        backgroundColor: "rgba(61,255, 61, 0.75)"
     },
     {
         id: 2005,
@@ -128,3 +118,64 @@ deleteButton.forEach(function(button){
         row.remove();
     });
 });
+
+
+// Event-Listener für die Selectbox hinzufügen
+var filterSelect = document.getElementById("selectbox");
+filterSelect.addEventListener("change", function () {
+    filterTable(filterSelect.value);
+});
+
+// Event-Listener für das Suchfeld hinzufügen
+var searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("input", function () {
+    filterTable(filterSelect.value, searchInput.value);
+});
+
+// Funktion zum Filtern der Tabelle basierend auf dem ausgewählten Wert der Selectbox und dem Suchbegriff
+function filterTable(selectedStatus, searchTerm) {
+    var rows = document.querySelectorAll('.job-detail');
+
+    rows.forEach(function (row) {
+        var enabledCell = row.querySelector('.my-checkbox');
+        var isEnabled = enabledCell.checked;
+        var backgroundColor = getComputedStyle(row).backgroundColor;
+
+        // Bedingungen für Vergleich von Hintergrundfarben
+        var colorMatches =
+            (selectedStatus === "all") ||
+            (isEnabled && selectedStatus === "enabled") ||
+            (!isEnabled && selectedStatus === "disabled") ||
+            (selectedStatus === "success" && (
+                backgroundColor === "rgba(61, 255, 61, 0.75)" || backgroundColor === "rgb(61, 255, 61)"
+            )) ||
+            (selectedStatus === "failed" && (
+                backgroundColor === "rgba(255, 66, 66, 0.73)" || backgroundColor === "rgb(255, 66, 66)"
+            )) ||
+            (selectedStatus === "warning" && (
+                backgroundColor === "rgba(255, 252, 71, 0.8)" || backgroundColor === "rgb(255, 252, 71)"
+            ));
+
+        // Bedingungen für die Suche
+        var searchMatches = (
+            !searchTerm || row.textContent.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        // Entscheidung, ob die Zeile angezeigt oder versteckt werden soll
+        if (colorMatches && searchMatches) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+document.addEventListener('DOMContentLoaded', function () {
+    new Tablesort(document.getElementById('myTable'));
+});
+
+function redirectToEditPage() {
+    window.location.href = `edit.html?id=0`;
+}
+function createPage() {
+    window.location.href = `create.html`;
+}

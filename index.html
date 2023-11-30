@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link href="index.css" rel="stylesheet">
-    
+    <script src="https://unpkg.com/tablesort@5.0.2/dist/tablesort.min.js"></script>
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -30,16 +30,10 @@
     <div class="box">
       <box>Over all</box>
     </div>
-    <div class="create"><button>+ Create</button></div>
-    
+    <div class="create"><button onclick="createPage()">Create</button></div>
     <br>
     <div class="input">
-      <input type="search" placeholder="search for ID or name">
-      <button>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-        </svg> Search!
-      </button> 
+      <input type="search" id="searchInput" placeholder="search for ...">
     </div>
     <br>
     <br>
@@ -48,7 +42,7 @@
         <option value="success">Success</option>
         <option value="failed">Failed</option>
         <option value="warning">Warning</option>
-        <option value="anabled">Anabled</option>
+        <option value="enabled">Enabled</option>
         <option value="disabled">Disabled</option>
       </select>
       <table id="myTable">
@@ -63,7 +57,6 @@
               <div class="text">name</div>
             </th>
             <th>
-              <div class="thButton"><button><svg  width="16" height="16"><use xlink:href="#rearrange-icon"></use></svg></button></div>
               <div class="text">enbaled</div>
             </th>
             <th>
