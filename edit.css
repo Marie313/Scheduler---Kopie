@@ -2,7 +2,8 @@ body{
     background-color: rgb(255, 255, 255);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    padding: 50px 350px;
+    display: flex;
+    justify-content: center;
 }
 h1{
     padding-bottom: 0px;
@@ -80,4 +81,14 @@ a{
 input[type="checkbox"]{
     height: 20px;
     width: 20px;
+}
+.border{
+    border: 2px solid #000; 
+    height: 790px;
+    width: 350px;
+    padding-left: 70px;
+    background-color: #f0f0f0;
+}
+.run{
+    display: inline;
 }
