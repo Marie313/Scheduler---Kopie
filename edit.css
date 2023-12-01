@@ -33,7 +33,7 @@ a{
     padding-top: 20px;
 }
 .back button{
-    background-color: rgba(0, 0, 0, 0.593);
+    background-color: rgb(237, 145, 145);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -45,6 +45,26 @@ a{
     transition: .4s;
 }
 .back button:hover{
+    border-radius: 12px;
+    color: rgba(0, 0, 0, 0.593);
+    background-color: rgb(224, 224, 224);
+}
+.save{
+    padding-top: 20px;
+}
+.save button{
+    background-color: rgb(145, 239, 134);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 150px;
+    height: 30px;
+    transition: .4s;
+}
+.save button:hover{
     border-radius: 12px;
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);

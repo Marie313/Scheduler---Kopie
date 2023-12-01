@@ -66,7 +66,7 @@ const allJobs = [
     allJobs.forEach(job => {
     const jobDetailRow = document.createElement('tr');
     jobDetailRow.className = 'job-detail';
-
+    
     const jobDetailCells = [
         { value: job.id },
         { value: job.name },

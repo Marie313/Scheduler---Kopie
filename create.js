@@ -38,7 +38,11 @@ function createForm() {
 
         document.body.appendChild(el);
     });
-
+    // Button zum Speichern
+    const saveButton = document.createElement('div');
+    saveButton.innerHTML = '<div class="save"><button  onclick="saveElements()">Save</button></div>';
+    document.body.appendChild(saveButton);
+    
     // Button zum Zurückkehren zum Scheduler
     const backButton = document.createElement('div');
     backButton.innerHTML = '<div class="back"><button  onclick="redirectToScheduler()">Go back to scheduler</button></div>';
@@ -57,6 +61,11 @@ function createForm() {
 
 // Funktion zum Umleiten zur Index-Seite
 function redirectToScheduler() {
+    window.location.href = 'index.html';
+}
+
+// Funktion zum Speichern
+function saveElements() {
     window.location.href = 'index.html';
 }
 

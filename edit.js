@@ -107,16 +107,16 @@ if (selectedVariableId) {
         jobDetails.innerHTML = `
             <u><h1>Edit</h1></u>
             <p>ID: ${selectedJob.id}</p>
-            <label>Name: </label><input value=${selectedJob.name}>
+            <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${selectedJob.name}>
             ${checkboxHtml}
             <p>Status: ${selectedJob.status}</p>
-            <label>First Run: </label><input type="datetime-local" value=${selectedJob.firstRun}>
+            <label>First Run: </label><input class="firstRun" type="datetime-local" value=${selectedJob.firstRun}>
             <br>
-            <label>Next Run: </label><input type="datetime-local" value=${selectedJob.nextRun}>
+            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${selectedJob.nextRun}>
             <br>
-            <label>Last Run: </label><input type="datetime-local" value=${selectedJob.lastRun}>
+            <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${selectedJob.lastRun}>
             <br>
-            <label>Interval: </label> <input value=${selectedJob.interval}>
+            <label>Interval: </label> <input placeholder="please enter new interval in seconds..." class="interval" value=${selectedJob.interval}>
         `;
     } else {
         console.error('Ungültige Variable-ID');
@@ -148,5 +148,8 @@ checkbox.forEach(function(checkbox, index){
 });
 
 function redirectToScheduler(){
+    window.location.href= 'index.html'
+}
+function saveElemnts(){
     window.location.href= 'index.html'
 }
