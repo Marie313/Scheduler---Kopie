@@ -1,9 +1,5 @@
 // Funktion zum dynamischen Erstellen des Formulars
 function createForm() {
-    // Überschrift
-    const heading = document.createElement('u');
-    heading.innerHTML = '<h1>Create</h1>';
-    document.body.appendChild(heading);
 
     // Formular-Elemente
     const formElements = [
@@ -23,6 +19,14 @@ function createForm() {
         { type: 'input', attributes: { type: 'text', placeholder: 'enter interval in seconds' } },
     ];
 
+    // Container-Element erstellen
+    const container = document.createElement('div');
+    container.classList.add('border'); // Füge die Klasse 'border' hinzu
+
+    const heading = document.createElement('u');
+    heading.innerHTML = '<h1>Create</h1>';
+    container.appendChild(heading);
+
     formElements.forEach(element => {
         const el = document.createElement(element.type);
         
@@ -36,17 +40,24 @@ function createForm() {
             }
         }
 
-        document.body.appendChild(el);
+        container.appendChild(el);
     });
+
+    document.body.appendChild(container);
+
     // Button zum Speichern
-    const saveButton = document.createElement('div');
-    saveButton.innerHTML = '<div class="save"><button  onclick="saveElements()">Save</button></div>';
-    document.body.appendChild(saveButton);
+    const saveButtonContainer = document.createElement('div');
+    saveButtonContainer.classList.add('save');
+    saveButtonContainer.innerHTML = '<button  onclick="saveElements()">Save</button>';
+    container.appendChild(saveButtonContainer);
     
     // Button zum Zurückkehren zum Scheduler
-    const backButton = document.createElement('div');
-    backButton.innerHTML = '<div class="back"><button  onclick="redirectToScheduler()">Go back to scheduler</button></div>';
-    document.body.appendChild(backButton);
+    const backButtonContainer = document.createElement('div');
+    saveButtonContainer.classList.add('back');
+    backButtonContainer.innerHTML = '<button onclick="redirectToScheduler()">Go back to scheduler</button>';
+    container.appendChild(backButtonContainer);
+
+    document.body.appendChild(container);
 
     // Checkbox-Logik integrieren
     var checkboxes = document.querySelectorAll(".my-checkbox");
@@ -71,4 +82,3 @@ function saveElements() {
 
 // Formular erstellen, wenn das Skript geladen wird
 createForm();
-

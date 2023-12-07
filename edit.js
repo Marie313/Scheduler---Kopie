@@ -101,7 +101,7 @@ if (selectedVariableId) {
             <div class="checkbox">
                 <input type="checkbox" class="my-checkbox" ${selectedJob.enabled ? 'checked' : ''}>
             </div>
-            <div class="message"><p class="message">${selectedJob.enabled}</p></div>
+            <p>${selectedJob.enabled}</p>
         `;
         // Anzeigen der Details der ausgewählten Variable auf der Seite
         jobDetails.innerHTML = `

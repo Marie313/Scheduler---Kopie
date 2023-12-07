@@ -3,6 +3,8 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     padding: 50px 350px;
+    display: flex;
+    justify-content: center;
 }
 h1{
     padding-bottom: 0px;
@@ -10,6 +12,7 @@ h1{
 input{
     cursor: pointer;
     height: 15px;
+    width: 220px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     border-top: none;
@@ -17,6 +20,7 @@ input{
     border-right: none;
     display: flex;
     padding-top: 10px;
+    background-color: #f3f3f3;
 }
 input::placeholder{
     font-size: 15px;
@@ -33,10 +37,7 @@ a{
     background-color: rgb(255, 255, 255);
     width: 10px;
 }
-.back{
-    padding-top: 20px;
-}
-.back button{
+button{
     background-color: rgb(237, 145, 145);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -47,14 +48,26 @@ a{
     width: 150px;
     height: 30px;
     transition: .4s;
+    margin-top: 20px;
 }
-.back button:hover{
+button:hover{
     border-radius: 12px;
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);
 }
-.save{
-    padding-top: 20px;
+input[type="checkbox"]{
+    height: 17px;
+    width: 17px;
+    margin-left: 20px;
+}
+.border{
+    border: 2px solid #000; 
+    height: 680px;
+    width: 280px;
+    padding-left: 50px;
+    background-color: #f3f3f3;
+    display: inline; /* Flex-Container verwenden */
+    
 }
 .save button{
     background-color: rgb(145, 239, 134);
@@ -67,21 +80,10 @@ a{
     width: 150px;
     height: 30px;
     transition: .4s;
+    margin-top: 20px;
 }
 .save button:hover{
     border-radius: 12px;
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);
-}
-input[type="checkbox"]{
-    height: 17px;
-    width: 17px;
-    margin-left: 20px;
-}
-.border{
-    border: 2px solid #000; 
-    height: 790px;
-    width: 350px;
-    padding-left: 70px;
-    background-color: #f0f0f0;
 }
