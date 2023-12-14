@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Scheduler
+  description: Scheduler API
+paths:
+  /jobs:
+    get:
+      tags:
+        - Job
+      responses:
+        200:
+          description: bla
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/job'
+  /jobs/create:
+    post:
+      tags:
+        - Job
+      requestBody:
+        $ref: '#/components/requestBodies/job-create'
+      responses:
+        200:
+          $ref: '#/components/responses/job'
+  /jobs/{id}:
+    parameters:
+      - $ref: '#/components/parameters/identification'
+    get:
+      tags:
+        - Job
+      responses:
+        200:
+          $ref: '#/components/responses/job'
+        404:
+          description: not found
+    put:
+      tags:
+        - Job
+      requestBody:
+        $ref: '#/components/requestBodies/job-update'
+      responses:
+        200:
+          $ref: '#/components/responses/job'
+        404:
+          description: not found
+    delete:
+      tags:
+        - Job
+      responses:
+          200:
+            $ref: '#/components/responses/job'
+          404:
+            description: not found
+components:
+  parameters:
+    identification:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: identification number of job
+  requestBodies:
+    job-create:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              identification:
+                type: number
+                example: 135
+              name:
+                type: string
+                example: test
+              description:
+                type: string
+                example: description of test
+              enabled:
+                type: boolean
+              status:
+                type: string
+                enum: [success, warning, failed]
+              last-run:
+                type: string
+                format: date-time
+                example: 2023-12-07T11:13:36.900Z
+              next-run:
+                type: string
+                format: date-time
+                example: 2023-12-07T11:13:36.900Z
+              active-from:
+                type: string
+                format: date-time
+                example: 2023-12-07T11:13:36.900Z
+                description: job does not run before this date
+              active-until:
+                type: string
+                format: date-time
+                example: 2023-12-07T11:13:36.900Z
+                description: job does not run after this date
+              schedule:
+                type: string
+    job-update:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              new_name:
+                type: string
+              new_description:
+                type: string
+              new_enabled:
+                type: boolean
+              new_active-from:
+                type: string
+                format: date-time
+              new_active-until:
+                type: string
+                format: date-time
+              new_schedule:
+                type: string
+  responses:
+    job:
+      description: ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/job'
+  schemas:
+    job:
+      type: object
+      properties:
+        identification:
+          type: number
+          example: 135
+        name:
+          type: string
+          example: test
+        description:
+          type: string
+          example: description of test
+        enabled:
+          type: boolean
+        status:
+          type: string
+          enum: [success, warning, failed]
+        last-run:
+          type: string
+          format: date-time
+          example: 2023-12-07T11:13:36.900Z
+        next-run:
+          type: string
+          format: date-time
+          example: 2023-12-07T11:13:36.900Z
+        active-from:
+          type: string
+          format: date-time
+          example: 2023-12-07T11:13:36.900Z
+          description: job does not run before this date
+        active-until:
+          type: string
+          format: date-time
+          example: 2023-12-07T11:13:36.900Z
+          description: job does not run after this date
+        schedule:
+          type: string

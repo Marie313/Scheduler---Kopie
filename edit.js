@@ -74,16 +74,6 @@ const allJobs = [
         nextRun: "",
         lastRun: "2015-12-30T04:24",
         interval: ""
-    },
-    {
-        id: 0,
-        name: "",
-        enabled: false,
-        status: "none",
-        firstRun: "",
-        nextRun: "",
-        lastRun: "",
-        interval: ""
     }
 ];
 
@@ -96,26 +86,31 @@ if (selectedVariableId) {
     const selectedJob = allJobs.find(job => job.id === parseInt(selectedVariableId));
 
     if (selectedJob) {
+
         const checkboxHtml = `
             <p>Enabled:</p>
             <div class="checkbox">
                 <input type="checkbox" class="my-checkbox" ${selectedJob.enabled ? 'checked' : ''}>
             </div>
-            <p>${selectedJob.enabled}</p>
+            <p class="message">${selectedJob.enabled}</p>
         `;
+
+        const currentDate = new Date();
+        const formattedMinDate = currentDate.toISOString().slice(0, 16);
+
         // Anzeigen der Details der ausgewählten Variable auf der Seite
         jobDetails.innerHTML = `
-            <div class="border"
-            <u><h1>Edit</h1></u>
+            <div class="border">
+            <h1>Edit</h1>
             <p>ID: ${selectedJob.id}</p>
             <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${selectedJob.name}>
             ${checkboxHtml}
             <p>Status: ${selectedJob.status}</p>
-            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${selectedJob.firstRun}>
+            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${selectedJob.firstRun} disabled>
             <br>
-            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${selectedJob.nextRun}>
+            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${selectedJob.nextRun} min="${formattedMinDate}">
             <br>
-            <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${selectedJob.lastRun}>
+            <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${selectedJob.lastRun} disabled>
             <br>
             <label>Interval: </label><input placeholder="please enter new interval in seconds..." class="interval" value=${selectedJob.interval}>
             <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
@@ -152,8 +147,22 @@ checkbox.forEach(function(checkbox, index){
 });
 
 function redirectToScheduler(){
-    window.location.href= 'index.html'
+    window.location.href= 'index.html';
 }
 function saveElements(){
-    window.location.href= 'index.html'
+    const inputFirstRun = document.querySelector('.firstRun');
+    const inputNextRun = document.querySelector('.nextRun');
+    const inputLastRun = document.querySelector('.lastRun');
+    const inputInterval = document.querySelector('.interval');
+
+    // Überprüfen, ob das eingegebene Datum für next Run in der Vergangenheit liegt
+    const currentDate = new Date();
+    const selectedDateNext = new Date(inputNextRun.value);
+
+    if (selectedDateNext < currentDate) {
+        alert('Das fuer next Run ausgewaehlte Datum darf nicht in der Vergangenheit liegen.');
+        return;
+    }
+    
+    window.location.href= 'index.html';
 }

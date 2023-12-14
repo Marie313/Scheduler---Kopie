@@ -28,24 +28,21 @@
         <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
       </svg>Refresh
     </button>
-    <div class="box">
-      <box>Over all</box>
-    </div>
     <div class="create"><button onclick="createPage()">Create</button></div>
     <br>
-    <div class="input">
-      <input type="search" id="searchInput" placeholder="search for ...">
-    </div>
-    <br>
-    <br>
-    <select name="Filter" id="selectbox">
+    <div class="selectinput">
+    <select name="Filter" class="selectbox" id="selectbox">
         <option value="all" selected>All</option>
         <option value="success">Success</option>
         <option value="failed">Failed</option>
         <option value="warning">Warning</option>
         <option value="enabled">Enabled</option>
         <option value="disabled">Disabled</option>
-      </select>
+    </select>
+    <div class="input">
+      <input type="search" id="searchInput" placeholder="search for ...">
+    </div>
+    </div>
       <table id="myTable">
         <thead>
         <tr>
@@ -62,11 +59,19 @@
             </th>
             <th>
               <div class="thButton"><button><svg  width="16" height="16"><use xlink:href="#rearrange-icon"></use></svg></button></div>
+              <div class="text">status</div>
+            </th>
+            <th>
+              <div class="thButton"><button><svg  width="16" height="16"><use xlink:href="#rearrange-icon"></use></svg></button></div>
               <div class="text">last run</div>
             </th>
             <th>
               <div class="thButton"><button><svg  width="16" height="16"><use xlink:href="#rearrange-icon"></use></svg></button></div>
               <div class="text">next run</div>
+            </th>
+            <th>
+              <div class="thButton"><button><svg  width="16" height="16"><use xlink:href="#rearrange-icon"></use></svg></button></div>
+              <div class="text">interval</div>
             </th>
             <th>edit / delete</th>
         </tr>
