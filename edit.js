@@ -3,7 +3,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
-// Alle Jobs in einem Array
 const allJobs = [
     {
         id: 1234,
@@ -81,8 +80,6 @@ const allJobs = [
 if (selectedVariableId) {
     // Anzeigen der ausgewählten Variable auf der Seite
     const jobDetails = document.getElementById('jobDetails');
-
-    // Wählen Sie die entsprechende Variable basierend auf der ausgewählten ID
     const selectedJob = allJobs.find(job => job.id === parseInt(selectedVariableId));
 
     if (selectedJob) {
@@ -101,7 +98,7 @@ if (selectedVariableId) {
         const isFirstRunInPast = selectedFirstRunDate < currentDate;
 
 
-        // Anzeigen der Details der ausgewählten Variable auf der Seite
+        // Anzeigen der Details der ausgewählten Variable
         jobDetails.innerHTML = `
             <div class="border">
             <h1>Edit</h1>
@@ -130,14 +127,14 @@ if (selectedVariableId) {
 // Erstelle ein link-Element
 var linkElement = document.createElement('link');
 
-// Setze die Attribute des link-Elements
-linkElement.rel = 'stylesheet';
-linkElement.type = 'text/css';
-linkElement.href = 'edit.css';
+    // Attribute des link-Elements
+    linkElement.rel = 'stylesheet';
+    linkElement.type = 'text/css';
+    linkElement.href = 'edit.css';
+    // Füge das link-Element dem head-Element der Seite hinzu
+    document.head.appendChild(linkElement);
 
-// Füge das link-Element dem head-Element der Seite hinzu
-document.head.appendChild(linkElement);
-
+//Checkbox-Logik
 var checkbox = document.querySelectorAll(".my-checkbox");
 var message = document.querySelectorAll(".message");
 checkbox.forEach(function(checkbox, index){
@@ -149,16 +146,18 @@ checkbox.forEach(function(checkbox, index){
     });
 });
 
+//Funktion zum Zurückkehren zum Scheduler
 function redirectToScheduler(){
     window.location.href= 'index.html';
 }
+
+//Funktion zum Speichern und überprüfen der geänderten Daten
 function saveElements(){
     const inputFirstRun = document.querySelector('.firstRun');
     const inputNextRun = document.querySelector('.nextRun');
     const inputLastRun = document.querySelector('.lastRun');
     const inputInterval = document.querySelector('.interval');
 
-    // Überprüfen, ob das eingegebene Datum für next Run in der Vergangenheit liegt
     const currentDate = new Date();
     const maxDate = new Date();
     const selectedDateNext = new Date(inputNextRun.value);

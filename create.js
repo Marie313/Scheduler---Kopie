@@ -1,7 +1,6 @@
-// Funktion zum dynamischen Erstellen des Formulars
+//create.js
 function createForm() {
 
-    // Formular-Elemente
     const formElements = [
         { type: 'p', text: 'ID: ' },
         { type: 'label', text: 'Name: ' },
@@ -21,7 +20,7 @@ function createForm() {
 
     // Container-Element erstellen
     const container = document.createElement('div');
-    container.classList.add('border'); // Füge die Klasse 'border' hinzu
+    container.classList.add('border'); 
 
     const heading = document.createElement('u');
     heading.innerHTML = '<h1>Create</h1>';
@@ -58,7 +57,7 @@ function createForm() {
 
     if (selectedDateFirst < currentDate || selectedDateFirst > maxDate || selectedDateFirst >= selectedDateNext) {
         alert('Das ausgewaehlte Datum fuer "First Run" darf weder in der Vergangenheit, noch mehr als ein Jahr in der Zukunft liegen. Des weiteren ist der Fall, dass das Datum fuer first Run vor dem fuer next Run liegt, ausgeschlossen.');
-        firstRunInput.value = ''; // Setze das Datum zurück oder implementiere deine eigene Rücksetzlogik
+        firstRunInput.value = ''; 
     }
     });
 
@@ -70,7 +69,7 @@ function createForm() {
 
     if (selectedDateNext <= selectedDateFirst) {
         alert('Das ausgewaehlte Datum fuer "Next Run" darf zeitlich nicht vor first Run gelegen sein.');
-        nextRunInput.value = ''; // Setze das Datum zurück oder implementiere deine eigene Rücksetzlogik
+        nextRunInput.value = ''; 
     }
     });
 
@@ -81,7 +80,6 @@ function createForm() {
         if (!isNaN(firstRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
             const intervalInSeconds = Math.abs((nextRunDate - firstRunDate) / 1000);
     
-            // Setze das berechnete Interval in das entsprechende Input-Feld
             const intervalInput = document.querySelector('.interval');
             if (intervalInput) {
                 intervalInput.value = intervalInSeconds;
@@ -93,7 +91,7 @@ function createForm() {
     const intervalInput = document.querySelector('.interval');
     if (intervalInput) {
         intervalInput.addEventListener('input', function () {
-            updateNextRun(); // Aktualisiere den Next Run beim Ändern des Intervals
+            updateNextRun(); 
         });
     }
 
@@ -105,7 +103,6 @@ function createForm() {
         if (!isNaN(firstRunDate.getTime()) && !isNaN(intervalInSeconds)) {
             const nextRunDate = new Date(firstRunDate.getTime() + intervalInSeconds * 1000 + 3600000);
 
-            // Setze den berechneten Next Run in das entsprechende Input-Feld
             const nextRunInput = document.querySelector('.nextRun');
             if (nextRunInput) {
                 nextRunInput.value = nextRunDate.toISOString().slice(0, 16); // Formatierung für datetime-local
@@ -127,7 +124,7 @@ function createForm() {
 
     document.body.appendChild(container);
 
-    // Checkbox-Logik integrieren
+    // Checkbox-Logik
     var checkboxes = document.querySelectorAll(".my-checkbox");
 
     checkboxes.forEach(function (checkbox) {

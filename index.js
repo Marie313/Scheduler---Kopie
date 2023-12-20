@@ -3,7 +3,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
-// Alle Jobs in einem Array
 const allJobs = [
     {
         id: 1234,
@@ -136,13 +135,13 @@ deleteButton.forEach(function(button){
     });
 });
 
-// Event-Listener für die Selectbox hinzufügen
+// Event-Listener für die Selectbox 
 var filterSelect = document.getElementById("selectbox");
 filterSelect.addEventListener("change", function () {
     filterTable(filterSelect.value);
 });
 
-// Event-Listener für das Suchfeld hinzufügen
+// Event-Listener für das Suchfeld 
 var searchInput = document.getElementById("searchInput");
 searchInput.addEventListener("input", function () {
     filterTable(filterSelect.value, searchInput.value);
@@ -189,9 +188,12 @@ document.addEventListener('DOMContentLoaded', function () {
     new Tablesort(document.getElementById('myTable'));
 });
 
+//Funktion um zum Scheduler zurückkzukehren
 function redirectToEditPage() {
     window.location.href = `edit.html?id=0`;
 }
+
+//Funktion um neue Seite zu speichern
 function createPage() {
     window.location.href = `create.html`;
 }
