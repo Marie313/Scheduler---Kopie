@@ -10,9 +10,9 @@ const allJobs = [
         name: "Beispiel_1",
         enabled: true,
         status: "success",
-        firstRun: "2023-10-12T11:24",
-        nextRun: "2023-10-13T11:24",
-        lastRun: "2023-10-12T11:24",
+        firstRun: "2024-01-12T11:24",
+        nextRun: "2024-01-13T11:24",
+        lastRun: "2024-01-12T11:24",
         interval: "every_86.400_seconds"
     },
     {
@@ -97,6 +97,9 @@ if (selectedVariableId) {
 
         const currentDate = new Date();
         const formattedMinDate = currentDate.toISOString().slice(0, 16);
+        const selectedFirstRunDate = new Date(selectedJob.firstRun);
+        const isFirstRunInPast = selectedFirstRunDate < currentDate;
+
 
         // Anzeigen der Details der ausgewählten Variable auf der Seite
         jobDetails.innerHTML = `
@@ -106,7 +109,7 @@ if (selectedVariableId) {
             <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${selectedJob.name}>
             ${checkboxHtml}
             <p>Status: ${selectedJob.status}</p>
-            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${selectedJob.firstRun} disabled>
+            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${selectedJob.firstRun} ${isFirstRunInPast ? 'disabled' : ''}>
             <br>
             <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${selectedJob.nextRun} min="${formattedMinDate}">
             <br>
@@ -157,12 +160,18 @@ function saveElements(){
 
     // Überprüfen, ob das eingegebene Datum für next Run in der Vergangenheit liegt
     const currentDate = new Date();
+    const maxDate = new Date();
     const selectedDateNext = new Date(inputNextRun.value);
+    const selectedDateFirst = new Date(inputFirstRun.value)
+    maxDate.setFullYear(currentDate.getFullYear() + 1);
 
     if (selectedDateNext < currentDate) {
         alert('Das fuer next Run ausgewaehlte Datum darf nicht in der Vergangenheit liegen.');
         return;
     }
-    
+    if (selectedDateFirst > selectedDateNext || selectedDateFirst >= maxDate){
+        alert('Das fuer First Run ausgewaehlte Datum darf nicht in der Vergangenheit und, zeitlich gesehen, nicht nach dem next Run liegen. Des Weiteren sollte das ausgewaehlte Datum fuer first Run nicht mehr als ein Jahr in der Zukunft datiert sein.');
+        return;
+    }
     window.location.href= 'index.html';
 }
