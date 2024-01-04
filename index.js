@@ -9,8 +9,8 @@ const allJobs = [
         name: "Beispiel_1",
         enabled: true,
         status: "success",
-        lastRun: "2023-10-12T11:24",
-        nextRun: "2023-10-13T11:24",
+        lastRun: "2024-01-12T11:24",
+        nextRun: "2024-01-13T11:24",
         interval: "every_86.400_seconds",
         backgroundColor: "rgba(61, 255, 61, 0.75)"
     },
