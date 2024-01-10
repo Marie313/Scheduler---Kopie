@@ -3,85 +3,31 @@
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
-const allJobs = [
-    {
-        id: 1234,
-        name: "Beispiel_1",
-        enabled: true,
-        status: "success",
-        lastRun: "2024-01-12T11:24",
-        nextRun: "2024-01-13T11:24",
-        interval: "every_86.400_seconds",
-        backgroundColor: "rgba(61, 255, 61, 0.75)"
-    },
-    {
-        id: 2023,
-        name: "Beispiel_2",
-        enabled: true,
-        status: "success",
-        lastRun: "2023-06-14T22:24",
-        nextRun: "2023-12-14T22:24",
-        interval: "every_15.768.000_seconds",
-        backgroundColor: "rgba(61, 255, 61, 0.75)"
-    },
-    {
-        id: 5678,
-        name: "Beispiel_3",
-        enabled: true,
-        status: "warning",
-        lastRun: "2023-09-12T10:19",
-        nextRun: "2023-11-12T10:15",
-        interval: "every_7.884.000_seconds",
-        backgroundColor: "rgba(255, 252, 71, 0.8)"
-    },
-    {
-        id: 1010,
-        name: "Beispiel_4",
-        enabled: false,
-        status: "none",
-        lastRun: "-",
-        nextRun: "-",
-        interval: "-",
-    },
-    {
-        id: 3103,
-        name: "Beispiel_5",
-        enabled: true,
-        status: "failed",
-        lastRun: "2023-10-08T09:35",
-        nextRun: "2023-10-18T09:35",
-        interval: "every_864.000_seconds",
-        backgroundColor: "rgba(255, 66, 66, 0.73)"
-    },
-    {
-        id: 9876,
-        name: "Beispiel_6",
-        enabled: true,
-        status: "success",
-        lastRun: "2023-10-12T10:01",
-        nextRun: "2023-10-13T10:02",
-        interval: "every_60_seconds",
-        backgroundColor: "rgba(61,255, 61, 0.75)"
-    },
-    {
-        id: 2005,
-        name: "Beispiel_7",
-        enabled: false,
-        status: "success",
-        lastRun: "2015-12-30T04:24",
-        nextRun: "-",
-        interval: "-",
-        backgroundColor: "rgba(61, 255, 61, 0.75)"
-    }
-];
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const apiUrl = 'http://20.166.67.112:82/jobs';
+
+async function getJobs() {
+    const response = await fetch(proxyUrl + apiUrl, {
+        method: 'GET',
+        headers:{
+            'Access-Control-Allow-Origin':'*'
+        }
+    });
+
+    const jobs = await response.json();
+    console.log(jobs);
+    displayJobs(jobs);
+}
+
+function displayJobs(jobs) {
     const jobDetailsTableBody = document.getElementById('jobTable');
 
-    allJobs.forEach(job => {
-    const jobDetailRow = document.createElement('tr');
-    jobDetailRow.className = 'job-detail';
-    
+    jobs.forEach(job => {
+        const jobDetailRow = document.createElement('tr');
+        jobDetailRow.className = 'job-detail';
+
     const jobDetailCells = [
-        { value: job.id },
+        { value: job.identification },
         { value: job.name },
         {
             value: `
@@ -92,12 +38,12 @@ const allJobs = [
             `,
         },
         { value: job.status },
-        { value: job.lastRun },
-        { value: job.nextRun },
+        { value: job['last-run'] ? formatDate(job['last-run']) : 'not available'},
+        { value: job['next-run'] ? formatDate(job['next-run']) : 'not available'},
         { value: job.interval},
         {
             value: `
-                <div class="edit"><a href="edit.html?id=${job.id}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
+                <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
                 <div class="delete"><button onClick="alert('really want to delete this process?')" class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
             `,
         },
@@ -110,7 +56,7 @@ const allJobs = [
         jobDetailRow.appendChild(tdElement);
     });
 
-    jobDetailRow.style.backgroundColor = job.backgroundColor || '';
+    jobDetailRow.style.backgroundColor = getBackgroundColor(job.status);
 
     jobDetailsTableBody.appendChild(jobDetailRow);
 
@@ -127,6 +73,24 @@ const allJobs = [
     });
 });
 
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+function getBackgroundColor(status) {
+    switch (status) {
+        case 'success':
+            return 'rgba(61, 255, 61, 0.75)';
+        case 'warning':
+            return 'rgba(255, 252, 71, 0.8)';
+        case 'failed':
+            return 'rgba(255, 66, 66, 0.73)';
+        default:
+            return '';
+    }
+}
+
 var deleteButton = document.querySelectorAll('.deleteButton')
 deleteButton.forEach(function(button){
     button.addEventListener('click',function(){
@@ -134,6 +98,8 @@ deleteButton.forEach(function(button){
         row.remove();
     });
 });
+}
+getJobs();
 
 // Event-Listener für die Selectbox 
 var filterSelect = document.getElementById("selectbox");
