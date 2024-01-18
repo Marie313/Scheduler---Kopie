@@ -14,7 +14,7 @@ async function fetchJobs() {
             'Access-Control-Allow-Origin': '*'
         }
     });
-
+    
     const data = await response.json();
     console.log(data);
 

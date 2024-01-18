@@ -54,31 +54,46 @@ function createForm() {
     // Überprüfung des First Run-Datums
     const firstRunInput = document.querySelector('.firstRun');
     const nextRunInput = document.querySelector('.nextRun');
+    const activeuntilInput = document.querySelector('.activeuntil');
+    
     firstRunInput.addEventListener('change', function () {
         updateInterval();
-    const selectedDateFirst = new Date(firstRunInput.value);
-    const selectedDateNext = new Date(nextRunInput.value);
-    const currentDate = new Date();
-    const maxDate = new Date();
-    maxDate.setFullYear(currentDate.getFullYear() + 1);
+        const selectedDateFirst = new Date(firstRunInput.value);
+        const selectedDateNext = new Date(nextRunInput.value);
+        const currentDate = new Date();
+        const maxDate = new Date();
+        const selectedActivUntil = new Date(activeuntilInput.value);
+        maxDate.setFullYear(currentDate.getFullYear() + 1);
 
-    if (selectedDateFirst < currentDate || selectedDateFirst > maxDate || selectedDateFirst >= selectedDateNext) {
-        alert('Das ausgewaehlte Datum fuer "First Run" darf weder in der Vergangenheit, noch mehr als ein Jahr in der Zukunft liegen. Des weiteren ist der Fall, dass das Datum fuer first Run vor dem fuer next Run liegt, ausgeschlossen.');
-        firstRunInput.value = ''; 
-    }
+        if (selectedDateFirst < currentDate || selectedDateFirst > maxDate || selectedDateFirst >= selectedDateNext || selectedDateFirst > selectedActivUntil) {
+            alert('Das ausgewaehlte Datum fuer "first run" darf weder in der Vergangenheit, noch mehr als ein Jahr in der Zukunft liegen. Des weiteren sind die Faell, dass das Datum fuer "first run" vor dem Datum fuer "next run" oder "active until" liegt, ausgeschlossen.');
+            firstRunInput.value = ''; 
+        }
     });
 
     // Überprüfung des Next Run-Datums
     nextRunInput.addEventListener('change', function () {
         updateInterval();
-    const selectedDateNext = new Date(nextRunInput.value);
-    const selectedDateFirst = new Date(firstRunInput.value);
+        const selectedDateNext = new Date(nextRunInput.value);
+        const selectedDateFirst = new Date(firstRunInput.value);
+        const selectedActivUntil = new Date(activeuntilInput.value);
 
-    if (selectedDateNext <= selectedDateFirst) {
-        alert('Das ausgewaehlte Datum fuer "Next Run" darf zeitlich nicht vor first Run gelegen sein.');
-        nextRunInput.value = ''; 
-    }
+        if (selectedDateNext <= selectedDateFirst || selectedDateNext > selectedActivUntil) {
+            alert('Das ausgewaehlte Datum fuer "next run" darf zeitlich nicht vor "first Run" oder "activ until" gelegen sein.');
+            nextRunInput.value = ''; 
+        }
     });
+
+    activeuntilInput.addEventListener('change', function(){
+        const selectedActivUntil = new Date(activeuntilInput.value);
+        const selectedDateFirst = new Date(firstRunInput.value);
+        const selectedDateNext = new Date(nextRunInput.value);
+
+        if (selectedActivUntil < selectedDateFirst || selectedActivUntil < selectedDateNext){
+            alert('Das ausgewaehlte Datum fuer "active until" darf zeitlich gesehen nicht vor "next run" und erst recht nicht vor "first run" liegen.');
+            activeuntilInput.value = '';
+        }
+    })
 
     function updateInterval() {
         const firstRunDate = new Date(firstRunInput.value);

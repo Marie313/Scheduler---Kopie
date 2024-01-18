@@ -10,7 +10,6 @@ async function getJobs() {
     const response = await fetch(proxyUrl + apiUrl, {
         method: 'GET',
         headers:{
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin':'*'
         }
     });
