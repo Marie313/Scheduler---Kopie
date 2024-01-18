@@ -10,6 +10,7 @@ async function getJobs() {
     const response = await fetch(proxyUrl + apiUrl, {
         method: 'GET',
         headers:{
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin':'*'
         }
     });
@@ -17,6 +18,18 @@ async function getJobs() {
     const jobs = await response.json();
     console.log(jobs);
     displayJobs(jobs);
+}
+function updateInterval(lastRun, nextRun) {
+    const lastRunDate = new Date(lastRun);
+    const nextRunDate = new Date(nextRun);
+
+    if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
+        const intervalInSeconds = Math.abs((nextRunDate - lastRunDate) / 1000);
+        return `${intervalInSeconds} seconds`;
+    } 
+    else{ 
+        return 'not available'
+    }
 }
 
 function displayJobs(jobs) {
@@ -40,7 +53,7 @@ function displayJobs(jobs) {
         { value: job.status },
         { value: job['last-run'] ? formatDate(job['last-run']) : 'not available'},
         { value: job['next-run'] ? formatDate(job['next-run']) : 'not available'},
-        { value: job.interval},
+        { value: updateInterval(job['last-run'],job['next-run'])},
         {
             value: `
                 <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
@@ -77,6 +90,8 @@ function formatDate(dateString) {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
+
+
 
 function getBackgroundColor(status) {
     switch (status) {

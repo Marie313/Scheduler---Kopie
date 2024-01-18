@@ -20,6 +20,7 @@ input{
     border-right: none;
     display: flex;
     padding-top: 10px;
+    margin-bottom: 20px;
     background-color: #f3f3f3;
 }
 input::placeholder{
@@ -63,7 +64,7 @@ input[type="checkbox"]{
 .border{
     border: 2px solid #000; 
     border-radius: 5px;
-    height: 680px;
+    height: 950px;
     width: 280px;
     padding-left: 50px;
     background-color: #f3f3f3;
@@ -87,4 +88,10 @@ input[type="checkbox"]{
     border-radius: 12px;
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);
+}
+p{
+    font-size: 17px;
+}
+label{
+    font-size: 18px;
 }

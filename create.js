@@ -2,18 +2,25 @@
 function createForm() {
 
     const formElements = [
-        { type: 'p', text: 'ID: ' },
+        { type: 'label', text: 'ID: ' },
+        { type: 'input', attributes: { type: 'text', placeholder: 'ID', class: 'ID'} },
         { type: 'label', text: 'Name: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'enter new name' } },
-        { type: 'p', text: 'Enabled: ' },
+        { type: 'input', attributes: { type: 'text', placeholder: 'enter new name', class:'name' } },
+        { type: 'label', text: 'description: ' },
+        { type: 'input', attributes: { type: 'text', placeholder: 'enter new description', class:'description' } },
+        { type: 'label', text: 'Enabled: ' },
         { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox' } },
         { type: 'p', text: 'false', class: 'message' },
+        { type: 'label', text: 'status: ' },
+        { type: 'input', attributes: { type: 'text', placeholder: 'success', class: 'status' } },
         { type: 'label', text: 'First Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun'}},
         { type: 'br' },
         { type: 'label', text: 'Next Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'nextRun'}},
         { type: 'br' },
+        { type: 'label', text: 'activ until: ' },
+        { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil'}},
         { type: 'label', text: 'Interval (in seconds): ' },
         { type: 'input', attributes: { type: 'text', placeholder: 'enter interval in seconds', class: 'interval'} },
     ];
@@ -135,15 +142,62 @@ function createForm() {
     });
 }
 
+
+
 // Funktion zum Umleiten zur Index-Seite
 function redirectToScheduler() {
     window.location.href = 'index.html';
 }
 
-// Funktion zum Speichern
-function saveElements() {
-    window.location.href = 'index.html';
-}
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const apiUrl = 'http://20.166.67.112:82/jobs/create';
+ 
 
-// Formular erstellen, wenn das Skript geladen wird
+async function saveElements() {
+    // Daten sammeln
+    const IDinput = document.querySelector('.ID');
+    const nameInput = document.querySelector('.name');
+    const descriptioninput = document.querySelector('.description');
+    const enabledCheckbox = document.querySelector('.my-checkbox');
+    const statusinput = document.querySelector('.status');
+    const lastRunInput = document.querySelector('.firstRun');
+    const firstRunInput = document.querySelector('.firstRun');
+    const nextRunInput = document.querySelector('.nextRun');
+    const activeUntil = document.querySelector('.activeuntil');
+
+    //nur zur Überprüfung ob daten im richtigen Format vorliegen
+    const firstRunDate = new Date(firstRunInput.value);
+    console.log('First Run:', firstRunDate);
+
+    // Daten für den POST-Request vorbereiten
+    const requestData = {
+        identification: IDinput.value,
+        name: nameInput.value,
+        description: descriptioninput.value,
+        enabled: enabledCheckbox.checked,
+        status: statusinput.value,
+        'last-run': new Date(lastRunInput.value).toISOString(),
+        'next-run': new Date(nextRunInput.value).toISOString(),
+        'active-from': new Date(firstRunInput.value).toISOString(),
+        'active-until': new Date(activeUntil.value).toISOString(),
+        schedule: "schedule",
+    };
+
+    console.log('Request Data:', JSON.stringify(requestData));
+
+    {
+        // POST-Request an den Server senden
+        const response = await fetch(proxyUrl +apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*', 
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        const newJob = await response.json();
+        console.log('Neuer Job:', newJob);
+    } 
+}
 createForm();

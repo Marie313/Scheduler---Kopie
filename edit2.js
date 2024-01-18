@@ -2,30 +2,34 @@
 // Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
-console.log(selectedVariableId);
 
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-const apiUrl = 'http://20.166.67.112:82/jobs/{id}';
+const apiUrl = 'http://20.166.67.112:82/jobs/135';
 
 async function fetchJobs() {
     const response = await fetch(proxyUrl + apiUrl, {
         method: 'GET',
-        headers:{
-            'Access-Control-Allow-Origin':'*'
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         }
     });
 
-    return await response.json();
+    const data = await response.json();
+    console.log(data);
+
+    return Array.isArray(data)? data :[];
 }
 
 // Überprüfen, ob eine Variable ausgewählt wurde
 async function getJobs(){
     const jobs = await fetchJobs();
-    console.log(jobs);
-    
-    const selectedJob = jobs.find(job => job.id === parseInt(selectedVariableId));
 
-    if (selectedJob) {
+    if(Array.isArray(jobs)){
+    
+        const selectedJob = jobs.find(job => job.id === parseInt(selectedVariableId));
+
+        if (selectedJob) {
 
         const jobDetails = document.getElementById('jobDetails');
 
@@ -62,8 +66,12 @@ async function getJobs(){
             <div class=back><button onclick="redirectToScheduler()">go back to scheduler</button></div>
             </div>
             `;
-    } else {
+        } else {
         console.error('Ungültige Variable-ID');
+         }
+    }
+    else{
+        console.error('Fehler beim Abrufen von Jobs');
     }
 }
 
@@ -90,14 +98,6 @@ checkbox.forEach(function(checkbox, index){
 });
 const firstRunInput = document.querySelector('.firstRun');
 const nextRunInput = document.querySelector('.nextRun');
-
-firstRunInput.addEventListener('change', function (){
-    updateInterval();
-})
-
-nextRunInput.addEventListener('change', function () {
-    updateInterval();
-});
 
 function updateInterval() {
     const firstRunDate = new Date(firstRunInput.value);
@@ -143,8 +143,6 @@ function redirectToScheduler(){
 function saveElements(){
     const inputFirstRun = document.querySelector('.firstRun');
     const inputNextRun = document.querySelector('.nextRun');
-    const inputLastRun = document.querySelector('.lastRun');
-    const inputInterval = document.querySelector('.interval');
 
     const currentDate = new Date();
     const maxDate = new Date();
