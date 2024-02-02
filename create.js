@@ -12,7 +12,7 @@ function createForm() {
         { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox' } },
         { type: 'p', text: 'false', class: 'message' },
         { type: 'label', text: 'status: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'success', class: 'status' } },
+        { type: 'input', attributes: { type: 'text', placeholder: 'SUCCESS', class: 'status' } },
         { type: 'label', text: 'First Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun'}},
         { type: 'br' },
@@ -129,8 +129,19 @@ function createForm() {
             if (nextRunInput) {
                 nextRunInput.value = nextRunDate.toISOString().slice(0, 16); // Formatierung für datetime-local
             }
+        }
     }
-}
+
+    //Funktion zur Überprüfung des Status Feldes
+    const statusInput = document.querySelector('.status');
+    statusInput.addEventListener('change', function () {
+        const selectedStatus = statusInput.value;
+        if(selectedStatus != 'SUCCESS' && selectedStatus != 'FAILED' && selectedStatus != 'WARNING'){
+            alert('Der eingegebene Status ist ungueltig. Bitte beachten Sie, dass nur folgende drei Eingaben akzeptiert werden: "SUCCESS","WARNING","FAILED".');
+            statusInput.value = '';
+        }
+    })
+
 
     // Button zum Speichern
     const saveButtonContainer = document.createElement('div');

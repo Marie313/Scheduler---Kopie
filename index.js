@@ -53,7 +53,7 @@ function displayJobs(jobs) {
         {
             value: `
                 <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
-                <div class="delete"><button onClick="alert('really want to delete this process?')" class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
+                <div class="delete"><button class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
             `,
         },
     ];
