@@ -1,5 +1,3 @@
-//index.js
-// Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
@@ -7,7 +5,7 @@ const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'http://20.166.67.112:82/jobs';
 
 async function getJobs() {
-    const response = await fetch(proxyUrl + apiUrl, {
+    const response = await fetch(apiUrl, {
         method: 'GET',
         headers:{
             'Access-Control-Allow-Origin':'*'
@@ -39,20 +37,19 @@ function displayJobs(jobs) {
         jobDetailRow.className = 'job-detail';
 
     const jobDetailCells = [
-        { value: job.identification },
+        { value: job.id },
         { value: job.name },
         {
             value: `
                 <div>
-                    <input type="checkbox" class="my-checkbox" ${job.enabled ? 'checked' : ''}>
                     <p class="message">${job.enabled ? 'true' : 'false'}</p>
                 </div>
             `,
         },
         { value: job.status },
-        { value: job['last-run'] ? formatDate(job['last-run']) : 'not available'},
-        { value: job['next-run'] ? formatDate(job['next-run']) : 'not available'},
-        { value: updateInterval(job['last-run'],job['next-run'])},
+        { value: job.lastRun ? formatDate(job.lastRun) : 'not available'},
+        { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
+        { value: updateInterval(job.lastRun,job.nextRun)},
         {
             value: `
                 <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
@@ -71,18 +68,6 @@ function displayJobs(jobs) {
     jobDetailRow.style.backgroundColor = getBackgroundColor(job.status);
 
     jobDetailsTableBody.appendChild(jobDetailRow);
-
-    var checkbox = document.querySelectorAll(".my-checkbox");
-    var message = document.querySelectorAll(".message");
-    checkbox.forEach(function(checkbox, index){
-        checkbox.addEventListener('change', function(){
-            if (checkbox.checked) {
-                message[index].textContent = 'true';
-            } else {
-                message[index].textContent = 'false';
-            }
-        });
-    });
 });
 
 function formatDate(dateString) {
@@ -94,22 +79,46 @@ function formatDate(dateString) {
 
 function getBackgroundColor(status) {
     switch (status) {
-        case 'success':
+        case 'SUCCESS':
             return 'rgba(61, 255, 61, 0.75)';
-        case 'warning':
+        case 'WARNING':
             return 'rgba(255, 252, 71, 0.8)';
-        case 'failed':
+        case 'FAILED':
             return 'rgba(255, 66, 66, 0.73)';
         default:
             return '';
     }
 }
 
-var deleteButton = document.querySelectorAll('.deleteButton')
-deleteButton.forEach(function(button){
-    button.addEventListener('click',function(){
-        var row = button.closest('tr');
-        row.remove();
+async function deleteJob(jobId) {
+    try {
+        const response = await fetch(`${apiUrl}/${jobId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete job');
+        }
+
+        // Entfernen Sie die Zeile aus der Tabelle, wenn die Anfrage erfolgreich war
+        const rowToRemove = document.getElementById(`job-${jobId}`);
+        rowToRemove.remove();
+    } catch (error) {
+        console.error('Error deleting job:', error.message);
+    }
+}
+
+// Fügen Sie einen Event-Listener hinzu, um auf Klicks auf Lösch-Buttons zu reagieren
+var deleteButtons = document.querySelectorAll('.deleteButton');
+deleteButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+        var jobId = button.dataset.jobId; // Nehmen Sie die Job-ID aus dem Dataset
+        if (confirm('Wollen Sie diesen Prozess wirklich loeschen?')) {
+            deleteJob(jobId);
+        }
     });
 });
 }

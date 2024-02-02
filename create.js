@@ -186,15 +186,15 @@ async function saveElements() {
 
     // Daten für den POST-Request vorbereiten
     const requestData = {
-        identification: IDinput.value,
+        id: IDinput.value,
         name: nameInput.value,
         description: descriptioninput.value,
         enabled: enabledCheckbox.checked,
         status: statusinput.value,
-        'last-run': new Date(lastRunInput.value).toISOString(),
-        'next-run': new Date(nextRunInput.value).toISOString(),
-        'active-from': new Date(firstRunInput.value).toISOString(),
-        'active-until': new Date(activeUntil.value).toISOString(),
+        lastRun: new Date(lastRunInput.value).toISOString(),
+        nextRun: new Date(nextRunInput.value).toISOString(),
+        activeFrom: new Date(firstRunInput.value).toISOString(),
+        activeUntil: new Date(activeUntil.value).toISOString(),
         schedule: "schedule",
     };
 
@@ -202,7 +202,7 @@ async function saveElements() {
 
     {
         // POST-Request an den Server senden
-        const response = await fetch(proxyUrl +apiUrl, {
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

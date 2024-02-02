@@ -81,3 +81,15 @@ async function getJobs(){
     console.log(jobs);
 }
 getJobs();
+
+var checkbox = document.querySelectorAll(".my-checkbox");
+    var message = document.querySelectorAll(".message");
+    checkbox.forEach(function(checkbox, index){
+        checkbox.addEventListener('change', function(){
+            if (checkbox.checked) {
+                message[index].textContent = 'true';
+            } else {
+                message[index].textContent = 'false';
+            }
+        });
+    });

@@ -7,7 +7,7 @@ const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'http://20.166.67.112:82/jobs/135';
 
 async function fetchJobs() {
-    const response = await fetch(proxyUrl + apiUrl, {
+    const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -51,15 +51,15 @@ async function getJobs(){
         jobDetails.innerHTML = `
             <div class="border">
             <h1>Edit</h1>
-            <p>ID: ${job.identification}</p>
+            <p>ID: ${job.id}</p>
             <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${job.name}>
             ${checkboxHtml}
             <p>Status: ${job.status}</p>
-            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${job['active-from']} ${isFirstRunInPast ? 'disabled' : ''}>
+            <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${job.activeFrom} ${isFirstRunInPast ? 'disabled' : ''}>
             <br>
-            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${job['next-run']} min="${formattedMinDate}">
+            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${job.nextRun} min="${formattedMinDate}">
             <br>
-            <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${job['last-run']} disabled>
+            <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${job.lastRun} disabled>
             <br>
             <label>Interval (in seconds): </label><input placeholder="please enter new interval in seconds..." class="interval" value=${selectedJob.interval}>
             <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
