@@ -4,7 +4,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 console.log(selectedVariableId);
 
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'http://20.166.67.112:82/jobs/{id}';
 
 async function fetchJobs() {

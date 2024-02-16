@@ -175,7 +175,6 @@ function redirectToScheduler() {
     window.location.href = 'index.html';
 }
 
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'http://20.166.67.112:82/jobs/create';
  
 
