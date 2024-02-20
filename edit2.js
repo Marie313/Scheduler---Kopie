@@ -50,15 +50,18 @@ async function getJobs(){
         jobDetails.innerHTML = `
             <div class="border">
             <h1>Edit</h1>
-            <p>ID: ${job.id}</p>
+            <p>ID: </p><p class="ID">${job.id}</p>
             <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${job.name}>
             ${checkboxHtml}
-            <p>Status: ${job.status}</p>
+            <lable>description: </lable><input class="description" placeholder="please enter new description..." value=${job.description}>
+            <p>Status: </p><p class="status">${job.status}</p>
             <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${job.activeFrom} ${isFirstRunInPast ? 'disabled' : ''}>
             <br>
             <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${job.nextRun} min="${formattedMinDate}">
             <br>
             <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${job.lastRun} disabled>
+            <br>
+            <label>Active Until: </label><input class="activeUntil" type="datetime-local" value=${job.activeUntil}>
             <br>
             <label>Interval (in seconds): </label><input placeholder="please enter new interval in seconds..." class="interval" value=${selectedJob.interval}>
             <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
@@ -133,31 +136,83 @@ function updateNextRun() {
 }
 }
 
-//Funktion zum Zurückkehren zum Scheduler
-function redirectToScheduler(){
-    window.location.href= 'index.html';
-}
+const inputFirstRun = document.querySelector('.firstRun');
+const inputNextRun = document.querySelector('.nextRun');
 
-//Funktion zum Speichern und überprüfen der geänderten Daten
-function saveElements(){
-    const inputFirstRun = document.querySelector('.firstRun');
-    const inputNextRun = document.querySelector('.nextRun');
-
+//Überprüfen des Wertes für nextRun
+inputNextRun.addEventListener('change', function(){
     const currentDate = new Date();
+    const selectedDateNext = new Date(inputNextRun.value);
+
+    if (selectedDateNext < currentDate) {
+        alert('Das fuer next Run ausgewaehlte Datum darf nicht in der Vergangenheit liegen.');
+        inputNextRun.value='';
+    }
+})
+
+//Überprüfen des Wertes für firstRun
+inputFirstRun.addEventListener('change', function(){
     const maxDate = new Date();
     const selectedDateNext = new Date(inputNextRun.value);
     const selectedDateFirst = new Date(inputFirstRun.value)
     maxDate.setFullYear(currentDate.getFullYear() + 1);
 
-    if (selectedDateNext < currentDate) {
-        alert('Das fuer next Run ausgewaehlte Datum darf nicht in der Vergangenheit liegen.');
-        return;
-    }
     if (selectedDateFirst > selectedDateNext || selectedDateFirst >= maxDate){
         alert('Das fuer First Run ausgewaehlte Datum darf zeitlich gesehen, nicht nach dem next Run liegen. Des Weiteren sollte das ausgewaehlte Datum fuer first Run nicht mehr als ein Jahr in der Zukunft datiert sein.');
-        return;
+        inputFirstRun.value='';
     }
-    
-    window.location.href= 'index.html';
+})
+
+//Funktion zum Zurückkehren zum Scheduler
+function redirectToScheduler(){
+    const confirmed = confirm('Die geaenderten Daten werden nicht gespeichert!');
+    if (confirmed){
+        window.location.href= 'index.html';
+    }
+}
+
+//Funktion zum Speichern und überprüfen der geänderten Daten
+async function saveElements(){
+    // Daten sammeln
+    const IDinput = document.querySelector('.ID');
+    const nameInput = document.querySelector('.inputName');
+    const descriptioninput = document.querySelector('.description');
+    const enabledCheckbox = document.querySelector('.my-checkbox');
+    const statusinput = document.querySelector('.status');
+    const lastRunInput = document.querySelector('.lastRun');
+    const firstRunInput = document.querySelector('.firstRun');
+    const nextRunInput = document.querySelector('.nextRun');
+    const activeUntil = document.querySelector('.activeUntil');
+
+    // Daten für Request vorbereiten
+    const requestData = {
+        id: IDinput.value,
+        name: nameInput.value,
+        description: descriptioninput.value,
+        enabled: enabledCheckbox.checked,
+        status: statusinput.value,
+        lastRun: new Date(lastRunInput.value).toISOString(),
+        nextRun: new Date(nextRunInput.value).toISOString(),
+        activeFrom: new Date(firstRunInput.value).toISOString(),
+        activeUntil: new Date(activeUntil.value).toISOString(),
+        schedule: "schedule",
+    };
+
+    console.log('Request Data:', JSON.stringify(requestData));
+
+    {
+        //PUT-Request
+        const response = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*', 
+            },
+            body: JSON.stringify(requestData),
+        })
+        
+        const newJob = await response.json();
+        console.log('Neuer Job:', newJob);
+    }
 }
 getJobs();

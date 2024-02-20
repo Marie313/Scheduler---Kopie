@@ -172,7 +172,10 @@ function createForm() {
 
 // Funktion zum Umleiten zur Index-Seite
 function redirectToScheduler() {
-    window.location.href = 'index.html';
+    const confirmed = confirm('Die geaenderten Daten werden nicht gespeichert!');
+    if (confirmed){
+        window.location.href= 'index.html';
+    }
 }
 
 const apiUrl = '/scheduler/api/jobs/create';
