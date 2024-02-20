@@ -175,7 +175,7 @@ function redirectToScheduler() {
     window.location.href = 'index.html';
 }
 
-const apiUrl = 'http://20.166.67.112:82/jobs/create';
+const apiUrl = '/scheduler/api/jobs/create';
  
 
 async function saveElements() {
@@ -185,7 +185,7 @@ async function saveElements() {
     const descriptioninput = document.querySelector('.description');
     const enabledCheckbox = document.querySelector('.my-checkbox');
     const statusinput = document.querySelector('.status');
-    const lastRunInput = document.querySelector('.firstRun');
+    const lastRunInput = document.querySelector('.activeuntil');
     const firstRunInput = document.querySelector('.firstRun');
     const nextRunInput = document.querySelector('.nextRun');
     const activeUntil = document.querySelector('.activeuntil');
@@ -224,5 +224,6 @@ async function saveElements() {
         const newJob = await response.json();
         console.log('Neuer Job:', newJob);
     } 
+    window.location.href = 'index.html';
 }
 createForm();

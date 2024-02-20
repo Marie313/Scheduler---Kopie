@@ -1,7 +1,8 @@
+//index.js
 const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
-const apiUrl = 'http://20.166.67.112:82/jobs';
+const apiUrl = '/scheduler/api/jobs';
 
 async function getJobs() {
     const response = await fetch(apiUrl, {
@@ -41,13 +42,13 @@ function displayJobs(jobs) {
         {
             value: `
                 <div>
-                    <p class="message">${job.enabled ? 'true' : 'false'}</p>
+                    <input type="checkbox" class="my-checkbox" ${job.enabled ? 'checked' : ''} disabled>
                 </div>
             `,
         },
         { value: job.status },
-        { value: job.lastRun ? formatDate(job.lastRun) : 'not available'},
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
+        { value: job.activeUntil ? formatDate(job.activeUntil) : 'not available'},
         { value: updateInterval(job.lastRun,job.nextRun)},
         {
             value: `
@@ -99,6 +100,7 @@ async function deleteJob(jobId) {
         });
 
         if (!response.ok) {
+            console.log(jobId);
             throw new Error('Failed to delete job');
         }
 
@@ -115,6 +117,7 @@ var deleteButtons = document.querySelectorAll('.deleteButton');
 deleteButtons.forEach(function (button) {
     button.addEventListener('click', function () {
         var jobId = button.dataset.jobId; // Nehmen Sie die Job-ID aus dem Dataset
+        console.log(jobId);
         if (confirm('Wollen Sie diesen Prozess wirklich loeschen?')) {
             deleteJob(jobId);
         }

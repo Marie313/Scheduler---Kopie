@@ -1,22 +1,22 @@
 //edit.js
 // Laden der ausgewählten Variable-ID aus der URL
 const urlParams = new URLSearchParams(window.location.search);
-const selectedVariableId = urlParams.get('id');
+console.log(window.location.search);
+const selectedVariableId = urlParams.get(`id`);
+console.log(selectedVariableId);
 
-const apiUrl = 'http://20.166.67.112:82/jobs/135';
+const apiUrl = `/scheduler/api/jobs/${selectedVariableId}`;
 
 async function fetchJobs() {
     const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         }
     });
     
     const data = await response.json();
     console.log(data);
-
     return Array.isArray(data)? data :[];
 }
 
@@ -66,7 +66,7 @@ async function getJobs(){
             </div>
             `;
         } else {
-        console.error('Ungültige Variable-ID');
+        console.error('Ungueltige Variable-ID');
          }
     }
     else{

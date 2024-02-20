@@ -93,3 +93,26 @@ var checkbox = document.querySelectorAll(".my-checkbox");
             }
         });
     });
+
+    //Funktion zur Überprüfung des Status Feldes
+    const statusInput = document.querySelector('.status');
+    statusInput.addEventListener('change', function () {
+        const selectedStatus = statusInput.value;
+        if(selectedStatus != 'SUCCESS' && selectedStatus != 'FAILED' && selectedStatus != 'WARNING'){
+            alert('Der eingegebene Status ist ungueltig. Bitte beachten Sie, dass nur folgende drei Eingaben akzeptiert werden: "SUCCESS","WARNING","FAILED".');
+            statusInput.value = '';
+        }
+    })
+
+http://20.166.67.112/scheduler/
+
+const checkboxInputs = document.querySelectorAll('.my-checkbox');
+
+checkboxInputs.forEach(function(checkboxInput) {
+    checkboxInput.addEventListener('mousehover', function() {
+        alert('Wenn Sie einen Job aktivieren oder deaktivieren wollen, muessen Sie ueber den Editor gehen.');
+    });
+});
+
+{ type: 'label', text: 'ID: ' },
+{ type: 'input', attributes: { type: 'text', placeholder: 'ID', class: 'ID'} },
