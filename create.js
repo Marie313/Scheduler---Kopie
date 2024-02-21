@@ -16,6 +16,9 @@ function createForm() {
         { type: 'label', text: 'First Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun'}},
         { type: 'br' },
+        { type: 'label', text: 'Last Run: ' },
+        { type: 'input', attributes: { type: 'datetime-local', class: 'lastRun'}},
+        { type: 'br' },
         { type: 'label', text: 'Next Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'nextRun'}},
         { type: 'br' },
@@ -151,7 +154,7 @@ function createForm() {
     
     // Button zum Zurückkehren zum Scheduler
     const backButtonContainer = document.createElement('div');
-    saveButtonContainer.classList.add('back');
+    backButtonContainer.classList.add('back');
     backButtonContainer.innerHTML = '<button onclick="redirectToScheduler()">Go back to scheduler</button>';
     container.appendChild(backButtonContainer);
 
@@ -188,7 +191,7 @@ async function saveElements() {
     const descriptioninput = document.querySelector('.description');
     const enabledCheckbox = document.querySelector('.my-checkbox');
     const statusinput = document.querySelector('.status');
-    const lastRunInput = document.querySelector('.activeuntil');
+    const lastRunInput = document.querySelector('.lastRun');
     const firstRunInput = document.querySelector('.firstRun');
     const nextRunInput = document.querySelector('.nextRun');
     const activeUntil = document.querySelector('.activeuntil');

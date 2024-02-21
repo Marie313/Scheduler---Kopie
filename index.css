@@ -75,6 +75,7 @@ td{
     text-align: center;
     border-left: none;
     padding-bottom: 15px;
+    font-size: 14px;
 }
 th, td{
     border-bottom: 1px solid rgba(235, 235, 235, 0.8);
@@ -130,3 +131,4 @@ select{
     margin-top: 40px;
     margin-bottom: 15px;
 }
+

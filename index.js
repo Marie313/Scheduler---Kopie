@@ -16,16 +16,29 @@ async function getJobs() {
     console.log(jobs);
     displayJobs(jobs);
 }
-function updateInterval(lastRun, nextRun) {
+function updateInterval(lastRun, firstRun, nextRun) {
+    const currentDate = new Date();
     const lastRunDate = new Date(lastRun);
+    const firstRunDate = new Date(firstRun);
     const nextRunDate = new Date(nextRun);
 
-    if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
-        const intervalInSeconds = Math.abs((nextRunDate - lastRunDate) / 1000);
-        return `${intervalInSeconds} seconds`;
-    } 
-    else{ 
-        return 'not available'
+    if (firstRunDate >= currentDate){
+        if (!isNaN(firstRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
+            const intervalInSecondsFirst = Math.abs((nextRunDate - firstRunDate) / 1000);
+            return `${intervalInSecondsFirst} seconds`;
+        } 
+        else{ 
+            return 'not available'
+        }
+    }
+    else{
+        if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
+            const intervalInSeconds = Math.abs((nextRunDate - lastRunDate) / 1000);
+            return `${intervalInSeconds} seconds`;
+        } 
+        else{ 
+            return 'not available'
+        }
     }
 }
 
@@ -47,9 +60,11 @@ function displayJobs(jobs) {
             `,
         },
         { value: job.status },
+        { value: job.activeFrom ? formatDate(job.activeFrom) : 'not available'},
+        { value: job.lastRun ? formatDate(job.lastRun) : 'not available'},
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
         { value: job.activeUntil ? formatDate(job.activeUntil) : 'not available'},
-        { value: updateInterval(job.lastRun,job.nextRun)},
+        { value: updateInterval(job.lastRun, job.firstRun, job.nextRun)},
         {
             value: `
                 <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>

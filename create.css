@@ -64,7 +64,7 @@ input[type="checkbox"]{
 .border{
     border: 2px solid #000; 
     border-radius: 5px;
-    height: 950px;
+    height: 1040px;
     width: 280px;
     padding-left: 50px;
     background-color: #f3f3f3;
@@ -73,7 +73,7 @@ input[type="checkbox"]{
 }
 .save button{
     background-color: rgb(145, 239, 134);
-    color: white;
+    color: rgb(255, 255, 255);
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     border: none;
