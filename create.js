@@ -17,7 +17,7 @@ function createForm() {
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun'}},
         { type: 'br' },
         { type: 'label', text: 'Last Run: ' },
-        { type: 'input', attributes: { type: 'datetime-local', class: 'lastRun'}},
+        { type: 'input', attributes: { type: 'datetime-local', value: '0001-01-01T00:00', class: 'lastRun'}},
         { type: 'br' },
         { type: 'label', text: 'Next Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'nextRun'}},
@@ -58,6 +58,7 @@ function createForm() {
     const firstRunInput = document.querySelector('.firstRun');
     const nextRunInput = document.querySelector('.nextRun');
     const activeuntilInput = document.querySelector('.activeuntil');
+    const lastRunInput = document.querySelector('.lastRun')
     
     firstRunInput.addEventListener('change', function () {
         updateInterval();
@@ -86,6 +87,15 @@ function createForm() {
             nextRunInput.value = ''; 
         }
     });
+
+    lastRunInput.addEventListener('change', function(){
+        const selectedDateLast = new Date(lastRunInput.value);
+
+        if (selectedDateLast != '0001-01-01T00:00'){
+            alert('Das Datum fuer lastRun darf nicht veraendert werden und sollte immer bei 0001-01-01T00:00 liegen.');
+            lastRunInput.value='0001-01-01T00:00';
+        }
+    })
 
     activeuntilInput.addEventListener('change', function(){
         const selectedActivUntil = new Date(activeuntilInput.value);

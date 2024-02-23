@@ -16,20 +16,16 @@ async function getJobs() {
     console.log(jobs);
     displayJobs(jobs);
 }
-function updateInterval(lastRun, firstRun, nextRun) {
+function updateInterval(lastRun, activeFrom, nextRun) {
     const currentDate = new Date();
     const lastRunDate = new Date(lastRun);
-    const firstRunDate = new Date(firstRun);
+    const nullDate = new Date("0001-12-31T23:06:32");
+    const firstRunDate = new Date(activeFrom);
     const nextRunDate = new Date(nextRun);
 
-    if (firstRunDate >= currentDate){
-        if (!isNaN(firstRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
-            const intervalInSecondsFirst = Math.abs((nextRunDate - firstRunDate) / 1000);
-            return `${intervalInSecondsFirst} seconds`;
-        } 
-        else{ 
-            return 'not available'
-        }
+    if (firstRunDate > currentDate || lastRunDate.getTime() === nullDate.getTime()){
+        const intervalInSecondsFirst = Math.abs((nextRunDate - firstRunDate) / 1000);
+        return `${intervalInSecondsFirst} seconds`;
     }
     else{
         if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
@@ -37,7 +33,7 @@ function updateInterval(lastRun, firstRun, nextRun) {
             return `${intervalInSeconds} seconds`;
         } 
         else{ 
-            return 'not available'
+            return 'not avail'
         }
     }
 }
@@ -59,16 +55,16 @@ function displayJobs(jobs) {
                 </div>
             `,
         },
-        { value: job.status },
+        { value: job.status ? noneStatus(job.status, job.activeFrom) : 'not available' },
         { value: job.activeFrom ? formatDate(job.activeFrom) : 'not available'},
-        { value: job.lastRun ? formatDate(job.lastRun) : 'not available'},
+        { value: job.lastRun ? formatDateTime(job.lastRun) : 'not available'},
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
         { value: job.activeUntil ? formatDate(job.activeUntil) : 'not available'},
-        { value: updateInterval(job.lastRun, job.firstRun, job.nextRun)},
+        { value: updateInterval(job.lastRun, job.activeFrom, job.nextRun)},
         {
             value: `
-                <div class="edit"><a href="edit.html?id=${job.identification}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
-                <div class="delete"><button class="deleteButton"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
+                <div class="edit"><a href="edit.html?id=${job.id}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
+                <div class="delete"><button class="deleteButton" data-jobId="123"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
             `,
         },
     ];
@@ -90,7 +86,32 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+function formatDateTime(lastRun) {
+    const nullDate = new Date("0001-12-31T23:06:32");
+    const inputDate = new Date(lastRun);
 
+    // Überprüfen, ob das Datum gleich der "nullDate" ist
+    if (inputDate.toString() === nullDate.toString()) {
+        // Rückgabe eines alternativen Strings, wenn das Datum "nullDate" entspricht
+        return "noch kein last Run vorhanden";
+    } else {
+        // Rückgabe des formatierten Datums, wenn es sich nicht um "nullDate" handelt
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+        return new Date(lastRun).toLocaleDateString(undefined, options);
+    }
+}
+
+function noneStatus(status, activeFrom){
+    const firstDate = new Date(activeFrom);
+    const currentDate = new Date();
+    
+    if (firstDate > currentDate){
+        return 'NONE';
+    }
+    else{
+        return status;
+    }
+}
 
 function getBackgroundColor(status) {
     switch (status) {
@@ -100,6 +121,8 @@ function getBackgroundColor(status) {
             return 'rgba(255, 252, 71, 0.8)';
         case 'FAILED':
             return 'rgba(255, 66, 66, 0.73)';
+        case 'NONE':
+            return '';
         default:
             return '';
     }
@@ -119,7 +142,7 @@ async function deleteJob(jobId) {
             throw new Error('Failed to delete job');
         }
 
-        // Entfernen Sie die Zeile aus der Tabelle, wenn die Anfrage erfolgreich war
+        //Zeile aus Tabelle entfernen, wenn Anfrage erfolgreich war
         const rowToRemove = document.getElementById(`job-${jobId}`);
         rowToRemove.remove();
     } catch (error) {
@@ -127,11 +150,11 @@ async function deleteJob(jobId) {
     }
 }
 
-// Fügen Sie einen Event-Listener hinzu, um auf Klicks auf Lösch-Buttons zu reagieren
-var deleteButtons = document.querySelectorAll('.deleteButton');
+//Event-Listener hinzufügen, um auf Klicks des Lösch-Buttons zu reagieren
+const deleteButtons = document.querySelectorAll('.deleteButton');
 deleteButtons.forEach(function (button) {
     button.addEventListener('click', function () {
-        var jobId = button.dataset.jobId; // Nehmen Sie die Job-ID aus dem Dataset
+        const jobId = button.dataset.jobId; //Job-ID aus dem Dataset entnehmen
         console.log(jobId);
         if (confirm('Wollen Sie diesen Prozess wirklich loeschen?')) {
             deleteJob(jobId);

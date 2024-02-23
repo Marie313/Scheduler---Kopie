@@ -136,32 +136,7 @@ function updateNextRun() {
 }
 }
 
-const inputFirstRun = document.querySelector('.firstRun');
-const inputNextRun = document.querySelector('.nextRun');
 
-//Überprüfen des Wertes für nextRun
-inputNextRun.addEventListener('change', function(){
-    const currentDate = new Date();
-    const selectedDateNext = new Date(inputNextRun.value);
-
-    if (selectedDateNext < currentDate) {
-        alert('Das fuer next Run ausgewaehlte Datum darf nicht in der Vergangenheit liegen.');
-        inputNextRun.value='';
-    }
-})
-
-//Überprüfen des Wertes für firstRun
-inputFirstRun.addEventListener('change', function(){
-    const maxDate = new Date();
-    const selectedDateNext = new Date(inputNextRun.value);
-    const selectedDateFirst = new Date(inputFirstRun.value)
-    maxDate.setFullYear(currentDate.getFullYear() + 1);
-
-    if (selectedDateFirst > selectedDateNext || selectedDateFirst >= maxDate){
-        alert('Das fuer First Run ausgewaehlte Datum darf zeitlich gesehen, nicht nach dem next Run liegen. Des Weiteren sollte das ausgewaehlte Datum fuer first Run nicht mehr als ein Jahr in der Zukunft datiert sein.');
-        inputFirstRun.value='';
-    }
-})
 
 //Funktion zum Zurückkehren zum Scheduler
 function redirectToScheduler(){
@@ -206,7 +181,6 @@ async function saveElements(){
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*', 
             },
             body: JSON.stringify(requestData),
         })
