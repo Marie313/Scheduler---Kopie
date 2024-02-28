@@ -5,7 +5,7 @@ console.log(window.location.search);
 const selectedVariableId = urlParams.get(`id`);
 console.log(selectedVariableId);
 
-const apiUrl = `/scheduler/api/jobs/${selectedVariableId}`;
+const apiUrl = `/scheduler/api/job/${selectedVariableId}`;
 
 async function fetchJobs() {
     const response = await fetch(apiUrl, {
@@ -15,20 +15,15 @@ async function fetchJobs() {
         }
     });
     
-    const data = await response.json();
+    let data = await response.json();
     console.log(data);
-    return Array.isArray(data)? data :[];
+    return data ;
 }
 
 // Überprüfen, ob eine Variable ausgewählt wurde
 async function getJobs(){
-    const jobs = await fetchJobs();
-
-    if(Array.isArray(jobs)){
-    
-        const selectedJob = jobs.find(job => job.id === parseInt(selectedVariableId));
-
-        if (selectedJob) {
+    const job = await fetchJobs();
+    console.log(job);
 
         const jobDetails = document.getElementById('jobDetails');
 
@@ -37,12 +32,14 @@ async function getJobs(){
             <div class="checkbox">
                 <input type="checkbox" class="my-checkbox" ${job.enabled ? 'checked' : ''}>
             </div>
-            <p class="message">${job.enabled}</p>
+            <p class="message">
+            ${job.enabled ? 'true' : 'false'}
+            </p>
         `;
 
         const currentDate = new Date();
         const formattedMinDate = currentDate.toISOString().slice(0, 16);
-        const selectedFirstRunDate = new Date(selectedJob.firstRun);
+        const selectedFirstRunDate = new Date(job.firstRun);
         const isFirstRunInPast = selectedFirstRunDate < currentDate;
 
 
@@ -53,8 +50,7 @@ async function getJobs(){
             <p>ID: </p><p class="ID">${job.id}</p>
             <label>Name: </label><input class="inputName" placeholder="please enter new name..." value=${job.name}>
             ${checkboxHtml}
-            <lable>description: </lable><input class="description" placeholder="please enter new description..." value=${job.description}>
-            <p>Status: </p><p class="status">${job.status}</p>
+            <p>Status: </p><input class="status" value=${job.status}>
             <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${job.activeFrom} ${isFirstRunInPast ? 'disabled' : ''}>
             <br>
             <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${job.nextRun} min="${formattedMinDate}">
@@ -63,19 +59,12 @@ async function getJobs(){
             <br>
             <label>Active Until: </label><input class="activeUntil" type="datetime-local" value=${job.activeUntil}>
             <br>
-            <label>Interval (in seconds): </label><input placeholder="please enter new interval in seconds..." class="interval" value=${selectedJob.interval}>
+            <label>Interval (in seconds): </label><input placeholder="please enter new interval in seconds..." class="interval">
             <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
             <div class=back><button onclick="redirectToScheduler()">go back to scheduler</button></div>
             </div>
             `;
-        } else {
-        console.error('Ungueltige Variable-ID');
-         }
     }
-    else{
-        console.error('Fehler beim Abrufen von Jobs');
-    }
-}
 
 // Erstelle ein link-Element
 var linkElement = document.createElement('link');
@@ -87,17 +76,16 @@ var linkElement = document.createElement('link');
     // Füge das link-Element dem head-Element der Seite hinzu
     document.head.appendChild(linkElement);
 
-//Checkbox-Logik
-var checkbox = document.querySelectorAll(".my-checkbox");
-var message = document.querySelectorAll(".message");
-checkbox.forEach(function(checkbox, index){
-    checkbox.addEventListener('change',function(){
-        if (checkbox.checked){
-            message[index].textContent='true'}
-        else {
-            message[index].textContent='false'}
+    // Checkbox-Logik
+    var checkboxes = document.querySelectorAll(".my-checkbox");
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const statusElement = checkbox.nextElementSibling; // Nächstes Element nach der Checkbox
+            statusElement.textContent = checkbox.checked ? 'true' : 'false';
+        });
     });
-});
+
 const firstRunInput = document.querySelector('.firstRun');
 const nextRunInput = document.querySelector('.nextRun');
 
@@ -151,7 +139,6 @@ async function saveElements(){
     // Daten sammeln
     const IDinput = document.querySelector('.ID');
     const nameInput = document.querySelector('.inputName');
-    const descriptioninput = document.querySelector('.description');
     const enabledCheckbox = document.querySelector('.my-checkbox');
     const statusinput = document.querySelector('.status');
     const lastRunInput = document.querySelector('.lastRun');
@@ -163,14 +150,12 @@ async function saveElements(){
     const requestData = {
         id: IDinput.value,
         name: nameInput.value,
-        description: descriptioninput.value,
         enabled: enabledCheckbox.checked,
         status: statusinput.value,
         lastRun: new Date(lastRunInput.value).toISOString(),
         nextRun: new Date(nextRunInput.value).toISOString(),
         activeFrom: new Date(firstRunInput.value).toISOString(),
         activeUntil: new Date(activeUntil.value).toISOString(),
-        schedule: "schedule",
     };
 
     console.log('Request Data:', JSON.stringify(requestData));

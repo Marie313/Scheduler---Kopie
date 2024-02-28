@@ -104,7 +104,7 @@ var checkbox = document.querySelectorAll(".my-checkbox");
         }
     })
 
-http://20.166.67.112/scheduler/
+    http://20.166.67.112/scheduler/
 
 const checkboxInputs = document.querySelectorAll('.my-checkbox');
 
@@ -143,3 +143,15 @@ inputFirstRun.addEventListener('change', function(){
         inputFirstRun.value='';
     }
 })
+
+<div class="delete"><button class="deleteButton" data-jobId="123"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
+
+//Funktion zur Überprüfung des Status Feldes
+    const statusInput = document.querySelector('.status');
+    statusInput.addEventListener('change', function () {
+        const selectedStatus = statusInput.value;
+        if(selectedStatus != 'SUCCESS' && selectedStatus != 'FAILED' && selectedStatus != 'WARNING'){
+            alert('Der eingegebene Status ist ungueltig. Bitte beachten Sie, dass nur folgende drei Eingaben akzeptiert werden: "SUCCESS","WARNING","FAILED".');
+            statusInput.value = '';
+        }
+    })

@@ -90,12 +90,9 @@ input[type="checkbox"]{
 }
 .border{
     border: 2px solid #000; 
-    height: 780px;
+    height: 1000px;
     width: 330px;
     padding-left: 70px;
     background-color: #f3f3f3;
     border-radius: 5px;
 }
-
-
-

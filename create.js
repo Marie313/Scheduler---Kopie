@@ -2,17 +2,11 @@
 function createForm() {
 
     const formElements = [
-        { type: 'label', text: 'ID: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'ID', class: 'ID'} },
         { type: 'label', text: 'Name: ' },
         { type: 'input', attributes: { type: 'text', placeholder: 'enter new name', class:'name' } },
-        { type: 'label', text: 'description: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'enter new description', class:'description' } },
         { type: 'label', text: 'Enabled: ' },
         { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox' } },
         { type: 'p', text: 'false', class: 'message' },
-        { type: 'label', text: 'status: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'SUCCESS', class: 'status' } },
         { type: 'label', text: 'First Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun'}},
         { type: 'br' },
@@ -67,11 +61,17 @@ function createForm() {
         const currentDate = new Date();
         const maxDate = new Date();
         const selectedActivUntil = new Date(activeuntilInput.value);
+        const momentSelectedDateFirst = moment (selectedDateFirst);
         maxDate.setFullYear(currentDate.getFullYear() + 1);
 
         if (selectedDateFirst < currentDate || selectedDateFirst > maxDate || selectedDateFirst >= selectedDateNext || selectedDateFirst > selectedActivUntil) {
             alert('Das ausgewaehlte Datum fuer "first run" darf weder in der Vergangenheit, noch mehr als ein Jahr in der Zukunft liegen. Des weiteren sind die Faell, dass das Datum fuer "first run" vor dem Datum fuer "next run" oder "active until" liegt, ausgeschlossen.');
             firstRunInput.value = ''; 
+        }
+        if(momentSelectedDateFirst.isDST()){
+            const zonedFirstRun = selectedDateFirst.toLocaleString('en-DE', {timeZone: 'Europe/Berlin'});
+            firstRunInput.value = zonedFirstRun.slice(0, 16);
+            console.log('timezone changed');
         }
     });
 
@@ -81,19 +81,31 @@ function createForm() {
         const selectedDateNext = new Date(nextRunInput.value);
         const selectedDateFirst = new Date(firstRunInput.value);
         const selectedActivUntil = new Date(activeuntilInput.value);
+        const momentSelectedDateNext = moment (selectedDateFirst);
 
         if (selectedDateNext <= selectedDateFirst || selectedDateNext > selectedActivUntil) {
             alert('Das ausgewaehlte Datum fuer "next run" darf zeitlich nicht vor "first Run" oder "activ until" gelegen sein.');
             nextRunInput.value = ''; 
         }
+        if (momentSelectedDateNext.isDST()){
+            const zonedNextRun = selectedDateNext.toLocaleString('en-DE', {timeZone: 'Europe/Berlin'});
+            nextRunInput.value = zonedNextRun.slice(0, 16);
+            console.log('timezone changed');
+        }
     });
 
     lastRunInput.addEventListener('change', function(){
         const selectedDateLast = new Date(lastRunInput.value);
+        const momentSelectedDateLast = moment (selectedDateLast);
 
         if (selectedDateLast != '0001-01-01T00:00'){
             alert('Das Datum fuer lastRun darf nicht veraendert werden und sollte immer bei 0001-01-01T00:00 liegen.');
             lastRunInput.value='0001-01-01T00:00';
+        }
+        if(momentSelectedDateLast.isDST()){
+            const zonedLastRun = selectedDateLast.toLocaleString('en-DE', {timeZone: 'Europe/Berlin'});
+            lastRunInput.value = zonedLastRun.slice(0, 16);
+            console.log('timezone changed');
         }
     })
 
@@ -101,10 +113,16 @@ function createForm() {
         const selectedActivUntil = new Date(activeuntilInput.value);
         const selectedDateFirst = new Date(firstRunInput.value);
         const selectedDateNext = new Date(nextRunInput.value);
+        const momentSelectedActiveUntil = moment (selectedActivUntil)
 
         if (selectedActivUntil < selectedDateFirst || selectedActivUntil < selectedDateNext){
             alert('Das ausgewaehlte Datum fuer "active until" darf zeitlich gesehen nicht vor "next run" und erst recht nicht vor "first run" liegen.');
             activeuntilInput.value = '';
+        }
+        if (momentSelectedActiveUntil.isDST()){
+            const formattedDateFirst = selectedDateFirst.toISOString().slice(0, 16);
+            firstRunInput.value = formattedDateFirst;
+            console.log('timezone changed');
         }
     })
 
@@ -144,17 +162,6 @@ function createForm() {
             }
         }
     }
-
-    //Funktion zur Überprüfung des Status Feldes
-    const statusInput = document.querySelector('.status');
-    statusInput.addEventListener('change', function () {
-        const selectedStatus = statusInput.value;
-        if(selectedStatus != 'SUCCESS' && selectedStatus != 'FAILED' && selectedStatus != 'WARNING'){
-            alert('Der eingegebene Status ist ungueltig. Bitte beachten Sie, dass nur folgende drei Eingaben akzeptiert werden: "SUCCESS","WARNING","FAILED".');
-            statusInput.value = '';
-        }
-    })
-
 
     // Button zum Speichern
     const saveButtonContainer = document.createElement('div');
@@ -196,11 +203,8 @@ const apiUrl = '/scheduler/api/jobs/create';
 
 async function saveElements() {
     // Daten sammeln
-    const IDinput = document.querySelector('.ID');
     const nameInput = document.querySelector('.name');
-    const descriptioninput = document.querySelector('.description');
     const enabledCheckbox = document.querySelector('.my-checkbox');
-    const statusinput = document.querySelector('.status');
     const lastRunInput = document.querySelector('.lastRun');
     const firstRunInput = document.querySelector('.firstRun');
     const nextRunInput = document.querySelector('.nextRun');
@@ -212,11 +216,8 @@ async function saveElements() {
 
     // Daten für den POST-Request vorbereiten
     const requestData = {
-        id: IDinput.value,
         name: nameInput.value,
-        description: descriptioninput.value,
         enabled: enabledCheckbox.checked,
-        status: statusinput.value,
         lastRun: new Date(lastRunInput.value).toISOString(),
         nextRun: new Date(nextRunInput.value).toISOString(),
         activeFrom: new Date(firstRunInput.value).toISOString(),

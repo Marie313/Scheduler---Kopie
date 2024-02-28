@@ -3,6 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const selectedVariableId = urlParams.get('id');
 
 const apiUrl = '/scheduler/api/jobs';
+const apiUrlDelete ='/scheduler/api/job';
 
 async function getJobs() {
     const response = await fetch(apiUrl, {
@@ -55,7 +56,7 @@ function displayJobs(jobs) {
                 </div>
             `,
         },
-        { value: job.status ? noneStatus(job.status, job.activeFrom) : 'not available' },
+        { value: job.status},
         { value: job.activeFrom ? formatDate(job.activeFrom) : 'not available'},
         { value: job.lastRun ? formatDateTime(job.lastRun) : 'not available'},
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
@@ -101,18 +102,6 @@ function formatDateTime(lastRun) {
     }
 }
 
-function noneStatus(status, activeFrom){
-    const firstDate = new Date(activeFrom);
-    const currentDate = new Date();
-    
-    if (firstDate > currentDate){
-        return 'NONE';
-    }
-    else{
-        return status;
-    }
-}
-
 function getBackgroundColor(status) {
     switch (status) {
         case 'SUCCESS':
@@ -130,7 +119,7 @@ function getBackgroundColor(status) {
 
 async function deleteJob(jobId) {
     try {
-        const response = await fetch(`${apiUrl}/${jobId}`, {
+        const response = await fetch(`${apiUrlDelete}/${jobId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
