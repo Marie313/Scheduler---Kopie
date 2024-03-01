@@ -163,68 +163,72 @@ const apiUrl = '/scheduler/api/jobs/create';
 
 async function saveElements() {
     // Daten sammeln
-const nameInput = document.querySelector('.name');
-const enabledCheckbox = document.querySelector('.my-checkbox');
-const firstRunInput = document.querySelector('.firstRun');
-const nextRunInput = document.querySelector('.nextRun');
-const activeUntil = document.querySelector('.activeuntil');
-const scheduleInput = document.querySelector('.interval');
-const lastRunInput = new Date("0001-01-01T00:00:00");
+    const nameInput = document.querySelector('.name');
+    const enabledCheckbox = document.querySelector('.my-checkbox');
+    const firstRunInput = document.querySelector('.firstRun');
+    const nextRunInput = document.querySelector('.nextRun');
+    const activeUntil = document.querySelector('.activeuntil');
+    const scheduleInput = document.querySelector('.interval');
+    const lastRunInput = new Date("0001-01-01T00:00:00");
 
-const firstRunValue = new Date (firstRunInput.value);
-const nextRunValue = new Date (nextRunInput.value);
-const activeUntilValue = new Date (activeUntil.value);
-let formatedFirstRun;
-let formatedNextRun;
-let formatedActiveUntil
+    const firstRunValue = new Date (firstRunInput.value);
+    const nextRunValue = new Date (nextRunInput.value);
+    const activeUntilValue = new Date (activeUntil.value);
+    let formatedFirstRun;
+    let formatedNextRun;
+    let formatedActiveUntil
 
-if(firstRunValue.getTimezoneOffset() > 60){
-    formatedFirstRun = new Date(firstRunValue.getTime() + 7200000)
-}
-else{
-    formatedFirstRun = new Date(firstRunValue.getTime() + 3600000)
-}
+    console.log(firstRunValue.getTimezoneOffset());
+    console.log(nextRunValue.getTimezoneOffset());
+    console.log(activeUntilValue.getTimezoneOffset());
 
-if(nextRunValue.getTimezoneOffset() > 60){
-    formatedNextRun = new Date(nextRunValue.getTime() + 7200000)
-}
-else{
+    if(firstRunValue.getTimezoneOffset() < -60){
+        formatedFirstRun = new Date(firstRunValue.getTime() + 7200000)
+    }
+    else{
+        formatedFirstRun = new Date(firstRunValue.getTime() + 3600000)
+    }
+
+    if(nextRunValue.getTimezoneOffset() < -60){
+        formatedNextRun = new Date(nextRunValue.getTime() + 7200000)
+    }
+    else{
     formatedNextRun = new Date(nextRunValue.getTime() + 3600000)
-}
+    }
 
-if(activeUntilValue.getTimezoneOffset() > 60){
-    formatedActiveUntil= new Date(activeUntilValue.getTime() + 7200000)
-}
-else{
-    formatedActiveUntil= new Date(activeUntilValue.getTime() + 3600000)
-}
+    if(activeUntilValue.getTimezoneOffset() < -60){
+        formatedActiveUntil= new Date(activeUntilValue.getTime() + 7200000)
+    }
+    else{
+        formatedActiveUntil= new Date(activeUntilValue.getTime() + 3600000)
+    }
 
-// Umwandlung in ISO-Format
-const isoFormatedFirstRun = formatedFirstRun.toISOString();
-const isoFormatedNextRun = formatedNextRun.toISOString();
-const isoFormatedActiveUntil = formatedActiveUntil.toISOString();
+    // Umwandlung in ISO-Format
+    const isoFormatedFirstRun = formatedFirstRun.toISOString();
+    const isoFormatedNextRun = formatedNextRun.toISOString();
+    const isoFormatedActiveUntil = formatedActiveUntil.toISOString();
 
-// Nur zur Überprüfung, ob die Daten im richtigen Format vorliegen
-const firstRunDate = new Date(firstRunInput.value);
-const nextRunDate = new Date(nextRunInput.value);
-const activeUntilDate = new Date(activeUntil.value);
-console.log('First Run:', firstRunDate);
-console.log('Next Run:', nextRunDate);
-console.log('Active Until', activeUntilDate);
-console.log('First Run Formated:', isoFormatedFirstRun);
-console.log('Next Run Formated:', isoFormatedNextRun);
-console.log('Active Until Formated:', isoFormatedActiveUntil);
+    // Nur zur Überprüfung, ob die Daten im richtigen Format vorliegen
+    const firstRunDate = new Date(firstRunInput.value);
+    const nextRunDate = new Date(nextRunInput.value);
+    const activeUntilDate = new Date(activeUntil.value);
+    console.log('First Run:', firstRunDate);
+    console.log('Next Run:', nextRunDate);
+    console.log('Active Until', activeUntilDate);
+    console.log('First Run Formated:', isoFormatedFirstRun);
+    console.log('Next Run Formated:', isoFormatedNextRun);
+    console.log('Active Until Formated:', isoFormatedActiveUntil);
 
-// Daten für den POST-Request vorbereiten
-const requestData = {
-    name: nameInput.value,
-    enabled: enabledCheckbox.checked,
-    nextRun: isoFormatedNextRun,
-    lastRun: lastRunInput,
-    activeFrom: isoFormatedFirstRun,
-    activeUntil: isoFormatedActiveUntil,
-    schedule: scheduleInput.value,
-};
+    // Daten für den POST-Request vorbereiten
+    const requestData = {
+        name: nameInput.value,
+        enabled: enabledCheckbox.checked,
+        nextRun: isoFormatedNextRun,
+        lastRun: lastRunInput,
+        activeFrom: isoFormatedFirstRun,
+        activeUntil: isoFormatedActiveUntil,
+        schedule: scheduleInput.value,
+    };
 
     console.log('Request Data:', JSON.stringify(requestData));
 

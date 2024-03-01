@@ -193,21 +193,21 @@ async function saveElements(){
     let formatedNextRun;
     let formatedActiveUntil
 
-    if(firstRunValue.getTimezoneOffset() > 60){
+    if(firstRunValue.getTimezoneOffset() < -60){
         formatedFirstRun = new Date(firstRunValue.getTime() + 7200000)
     }
     else{
         formatedFirstRun = new Date(firstRunValue.getTime() + 3600000)
     }
     
-    if(nextRunValue.getTimezoneOffset() > 60){
+    if(nextRunValue.getTimezoneOffset() < -60){
         formatedNextRun = new Date(nextRunValue.getTime() + 7200000)
     }
     else{
         formatedNextRun = new Date(nextRunValue.getTime() + 3600000)
     }
     
-    if(activeUntilValue.getTimezoneOffset() > 60){
+    if(activeUntilValue.getTimezoneOffset() < -60){
         formatedActiveUntil= new Date(activeUntilValue.getTime() + 7200000)
     }
     else{
