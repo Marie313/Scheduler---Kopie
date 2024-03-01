@@ -62,10 +62,11 @@ function displayJobs(jobs) {
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
         { value: job.activeUntil ? formatDate(job.activeUntil) : 'not available'},
         { value: updateInterval(job.lastRun, job.activeFrom, job.nextRun)},
+        { value: job.schedule},
         {
             value: `
                 <div class="edit"><a href="edit.html?id=${job.id}"><svg width="16" height="16"><use xlink:href="#edit-icon"></use></svg></a></div>
-                <div class="delete"><button class="deleteButton" data-jobId="123"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
+                <div class="delete"><button class="deleteButton" data-job-id="${job.id}"><svg width="16" height="16"><use xlink:href="#delete-icon"></use></svg></button></div>
             `,
         },
     ];
@@ -83,8 +84,7 @@ function displayJobs(jobs) {
 });
 
 function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
 }
 
 function formatDateTime(lastRun) {
@@ -97,8 +97,7 @@ function formatDateTime(lastRun) {
         return "noch kein last Run vorhanden";
     } else {
         // Rückgabe des formatierten Datums, wenn es sich nicht um "nullDate" handelt
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
-        return new Date(lastRun).toLocaleDateString(undefined, options);
+        return new Date(lastRun).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
     }
 }
 
@@ -130,10 +129,8 @@ async function deleteJob(jobId) {
             console.log(jobId);
             throw new Error('Failed to delete job');
         }
-
-        //Zeile aus Tabelle entfernen, wenn Anfrage erfolgreich war
-        const rowToRemove = document.getElementById(`job-${jobId}`);
-        rowToRemove.remove();
+        window.location.href= 'index.html'; 
+        
     } catch (error) {
         console.error('Error deleting job:', error.message);
     }

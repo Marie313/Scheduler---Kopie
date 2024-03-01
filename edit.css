@@ -76,6 +76,26 @@ a{
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);
 }
+.delete{
+    padding-top: 20px;
+}
+.delete button{
+    background-color: rgb(131, 130, 130);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 150px;
+    height: 30px;
+    transition: .4s;
+}
+.delete button:hover{
+    border-radius: 12px;
+    color: rgba(0, 0, 0, 0.593);
+    background-color: rgb(224, 224, 224);
+}
 .checkbox{
     padding-left: 18px;
 }
@@ -90,7 +110,7 @@ input[type="checkbox"]{
 }
 .border{
     border: 2px solid #000; 
-    height: 1000px;
+    height: 980px;
     width: 330px;
     padding-left: 70px;
     background-color: #f3f3f3;
