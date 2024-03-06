@@ -53,8 +53,6 @@ async function getJobs(){
             <p>Status: </p><input class="status" value=${job.status}>
             <div class="run"><label>First Run: </label><input class="firstRun" type="datetime-local" value=${job.activeFrom} ${isFirstRunInPast ? 'disabled' : ''}>
             <br>
-            <label>Next Run: </label><input class="nextRun" type="datetime-local" value=${job.nextRun} min="${formattedMinDate}">
-            <br>
             <label>Last Run: </label><input class="lastRun" type="datetime-local" value=${job.lastRun} disabled>
             <br>
             <label>Active Until: </label><input class="activeuntil" type="datetime-local" value=${job.activeUntil}>
@@ -89,61 +87,22 @@ checkbox.forEach(function(checkbox, index){
 });
 
 const firstRunInput = document.querySelector('.firstRun');
-const lastRunInput = document.querySelector('.lastRun');
-const nextRunInput = document.querySelector('.nextRun');
-const intervalInput = document.querySelector('.interval');
+const activeuntilInput = document.querySelector('.activeuntil');
 
-firstRunInput.addEventListener('change', function(){
-    updateInterval();
-})
-
-lastRunInput.addEventListener('change', function(){
-    updateInterval();
-})
-
-nextRunInput.addEventListener('change', function(){
-    updateInterval();
-})
-
-intervalInput.addEventListener('input', function (){
-    updateNextRun();
-})
-
-function updateInterval(){
-    const lastRunDate = new Date(lastRunInput.value);
-    const nullDate = new Date("0001-12-31T23:06:32");
-    const firstRunDate = new Date(firstRunInput.value);
-    const nextRunDate = new Date(nextRunInput.value);
-
-    if(lastRunDate.getTime() === nullDate.getTime()){
-        const intervalInSecondsFirst = Math.abs((nextRunDate - firstRunDate) / 1000);
-        intervalInput.value = `every ${intervalInSecondsFirst} seconds`;
+activeuntilInput.addEventListener('change', function(){
+    const selectedActivUntil = new Date(activeuntilInput.value);
+    const selectedDateFirst = new Date(firstRunInput.value);
+    if (selectedActivUntil < selectedDateFirst){
+        alert('Das ausgewaehlte Datum fuer "active until" darf zeitlich gesehen nicht vor "first run" liegen.');
+        activeuntilInput.value = '';
     }
-    else{
-        if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
-            const intervalInSeconds = Math.abs((nextRunDate - lastRunDate) / 1000);
-            intervalInput.value = `every ${intervalInSeconds} seconds`;
-        } 
-        else{ 
-            intervalInput.value = 'not avail'
-        }
-    }
-}
+})
 
-function updateNextRun(){
-    const firstRunDate = new Date(firstRunInput.value);
-    const intervalInSeconds = parseFloat(intervalInput.value);
-
-    if (!isNaN(firstRunDate.getTime()) && !isNaN(intervalInSeconds)) {
-        const nextRunDate = new Date(firstRunDate.getTime() + intervalInSeconds * 1000 + 3600000);
-        nextRunInput.value = nextRunDate.toISOString(); // Formatierung für datetime-local
-    }
-}
 }
 
 //Funktion zum Zurückkehren zum Scheduler
 function redirectToScheduler(){
-    const confirmed = confirm('Die geaenderten Daten werden nicht gespeichert!');
+    const confirmed = confirm('Die geaenderten Daten werden nicht automatisch gespeichert!');
     if (confirmed){
         window.location.href= 'index.html';
     }
@@ -182,15 +141,12 @@ async function saveElements(){
     const statusinput = document.querySelector('.status');
     const lastRunInput = document.querySelector('.lastRun');
     const firstRunInput = document.querySelector('.firstRun');
-    const nextRunInput = document.querySelector('.nextRun');
     const activeUntil = document.querySelector('.activeuntil');
     const intervalInput = document.querySelector('.interval');
 
     const firstRunValue = new Date (firstRunInput.value);
-    const nextRunValue = new Date (nextRunInput.value);
     const activeUntilValue = new Date (activeUntil.value);
     let formatedFirstRun;
-    let formatedNextRun;
     let formatedActiveUntil
 
     if(firstRunValue.getTimezoneOffset() < -60){
@@ -199,14 +155,7 @@ async function saveElements(){
     else{
         formatedFirstRun = new Date(firstRunValue.getTime() + 3600000)
     }
-    
-    if(nextRunValue.getTimezoneOffset() < -60){
-        formatedNextRun = new Date(nextRunValue.getTime() + 7200000)
-    }
-    else{
-        formatedNextRun = new Date(nextRunValue.getTime() + 3600000)
-    }
-    
+
     if(activeUntilValue.getTimezoneOffset() < -60){
         formatedActiveUntil= new Date(activeUntilValue.getTime() + 7200000)
     }
@@ -215,18 +164,14 @@ async function saveElements(){
     }
 
     const isoformatedFirstRun = formatedFirstRun.toISOString();
-    const isoformatedNextRun = formatedNextRun.toISOString();
     const isoformatedActiveUntil = formatedActiveUntil.toISOString();
 
     //nur zur Überprüfung ob daten im richtigen Format vorliegen
     const firstRunDate = new Date(firstRunInput.value);
-    const nextRunDate = new Date(nextRunInput.value);
     const activeUntilDate = new Date(activeUntil.value);
     console.log('First Run:', firstRunDate);
-    console.log('Next Run:', nextRunDate);
     console.log('Active Until', activeUntilDate);
     console.log('First Run Formated:', isoformatedFirstRun);
-    console.log('Next Run Formated:', isoformatedNextRun);
     console.log('Active Until Formated:', isoformatedActiveUntil);
     console.log(Checkboxero.checked);
 
@@ -236,7 +181,6 @@ async function saveElements(){
         enabled: Checkboxero.checked,
         status: statusinput.value,
         lastRun: new Date(lastRunInput.value),
-        nextRun: isoformatedNextRun,
         activeFrom: isoformatedFirstRun,
         activeUntil: isoformatedActiveUntil,
         schedule: intervalInput.value,

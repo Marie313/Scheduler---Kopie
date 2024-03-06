@@ -17,27 +17,6 @@ async function getJobs() {
     console.log(jobs);
     displayJobs(jobs);
 }
-function updateInterval(lastRun, activeFrom, nextRun) {
-    const currentDate = new Date();
-    const lastRunDate = new Date(lastRun);
-    const nullDate = new Date("0001-12-31T23:06:32");
-    const firstRunDate = new Date(activeFrom);
-    const nextRunDate = new Date(nextRun);
-
-    if (firstRunDate > currentDate || lastRunDate.getTime() === nullDate.getTime()){
-        const intervalInSecondsFirst = Math.abs((nextRunDate - firstRunDate) / 1000);
-        return `${intervalInSecondsFirst} seconds`;
-    }
-    else{
-        if (!isNaN(lastRunDate.getTime()) && !isNaN(nextRunDate.getTime())) {
-            const intervalInSeconds = Math.abs((nextRunDate - lastRunDate) / 1000);
-            return `${intervalInSeconds} seconds`;
-        } 
-        else{ 
-            return 'not avail'
-        }
-    }
-}
 
 function displayJobs(jobs) {
     const jobDetailsTableBody = document.getElementById('jobTable');
@@ -61,7 +40,6 @@ function displayJobs(jobs) {
         { value: job.lastRun ? formatDateTime(job.lastRun) : 'not available'},
         { value: job.nextRun ? formatDate(job.nextRun) : 'not available'},
         { value: job.activeUntil ? formatDate(job.activeUntil) : 'not available'},
-        { value: updateInterval(job.lastRun, job.activeFrom, job.nextRun)},
         { value: job.schedule},
         {
             value: `
