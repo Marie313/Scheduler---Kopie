@@ -6,8 +6,14 @@ body{
     justify-content: center;
 }
 h1{
-    padding-bottom: 0px;
-    text-decoration: underline;
+    color:rgb(0, 0, 0);    
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    font-size: 30px;
+    text-decoration: underline 2px;
+    margin-bottom: 55px;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
 }
 .heading{
     text-decoration: underline;
@@ -22,13 +28,17 @@ input{
     border-left: none;
     border-right: none;
     display: flex;
-    padding-top: 10px;
+    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 50px;
     background-color: #f3f3f3;
 }
 label{
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.593);
+    font-size: 18px;
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
+    padding-bottom: 5px;
 }
 a{
     text-decoration: none;
@@ -40,7 +50,7 @@ a{
     padding-top: 20px;
 }
 .back button{
-    background-color: rgb(237, 145, 145);
+    background-color: rgb(131, 130, 130);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -80,7 +90,7 @@ a{
     padding-top: 20px;
 }
 .delete button{
-    background-color: rgb(131, 130, 130);
+    background-color: rgb(237, 145, 145);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -103,6 +113,7 @@ a{
     padding-left: 10px;
     color: rgba(0, 0, 0, 0.593);
     font-size: 18px;
+    margin-top: 5px;
 }
 input[type="checkbox"]{
     height: 20px;
@@ -110,9 +121,83 @@ input[type="checkbox"]{
 }
 .border{
     border: 2px solid #000; 
-    height: 980px;
-    width: 330px;
-    padding-left: 70px;
+    height: 550px;
+    width: 870px;
     background-color: #f3f3f3;
     border-radius: 5px;
+    padding: 40px;
+    margin-top: 20px;
+    position: relative;
+}
+.idValue{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 52px;
+    margin-right: 100px;
+    padding: 3px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: 2.5px solid #000;
+    border-radius: 5px;
+    background-color: #dddddd;
+}
+.ID{
+    padding-left: 10px;
+}
+p{
+    font-size: 17px;
+}
+.flexRun {
+    display: flex;
+    flex-direction: column; /* Setze die Ausrichtung auf Spalten */
+}
+.labels,
+.inputs {
+    display: flex;
+    flex-direction: row; /* Setze die Ausrichtung der Labels und Inputs auf Reihen */
+    margin-bottom: 10px; /* Füge Platz zwischen den Zeilen hinzu */
+}
+.firstRunDiv,
+.lastRunDiv{
+    margin-right: 203px; /* Füge Platz zwischen den Labels hinzu */
+}
+.inputs input{
+    margin-right: 50px;
+}
+.flexName {
+    display: flex;
+    flex-direction: column; /* Setze die Ausrichtung auf Spalten */
+}
+.labelsName,
+.inputsName {
+    display: flex;
+    flex-direction: row; /* Setze die Ausrichtung der Labels und Inputs auf Reihen */
+    margin-bottom: 10px; /* Füge Platz zwischen den Zeilen hinzu */
+}
+.NameM{
+    margin-right: 232px; /* Füge Platz zwischen den Labels hinzu */
+}
+.EnabledM{
+    margin-right: 212px;
+}
+.inputsName input[type="checkbox"]{
+    margin-right: 25px;
+}
+.inputsName input{
+    margin-right: 110px;
+}
+.inputsName p{
+    margin-right: 120px;
+}
+.Buttons{
+    display: flex;
+    margin-left: 158px;
+}
+.Buttons button{
+    margin-right: 50px;
+
+}
+.interval{
+    margin-top: 19px;
 }

@@ -1,32 +1,52 @@
 h1{
     color:rgb(0, 0, 0);    
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     display: flex;
+    font-size: 40px;
     justify-content:left;
+    text-shadow: 3px;
+    text-decoration: underline 2px;
 }
 body{
     background-color: rgb(255, 255, 255);
     padding-left: 15px;
-    padding-top: 5px;
     padding-right: 15px;
 }
+.toolbar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 60px;
+}
+.rerange{
+    border:none;
+    margin-right: 5px;
+}
+.refresh,
+.createButton{
+    width: 55px;
+    height: 30px;
+}
 button{
-    width: 150px;
-    height: 25px;
+    font-size: 16px;
+    transition: 0.4s;
     color: rgb(0, 0, 0);
     background-color: rgb(235, 235, 235);
-    border-color: rgb(235, 235, 235);
+    border-color: rgb(0, 0, 0);
+    border-width: 0.5px;
+    border-radius: 3px;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    border: none;
-    border-radius: 3px;
     cursor: pointer;
-    transition: 0.4s;
 }
 button:hover{
-    border-radius: 8px;
-    color: rgb(235, 235, 235);
-    background-color: rgb(128, 128, 128);
+    background-color: rgb(217, 217, 217);
+    border-color: rgb(217, 217, 217);
+}
+.refresh svg {
+    vertical-align: middle;
+    margin-left: 13px;
+    margin-bottom: 2px;
 }
 .thButton button{
     background-color: rgb(220, 220, 220);
@@ -35,21 +55,38 @@ button:hover{
 .thButton{
     display: inline;
 }
+.createButton{
+    margin-right: 15px;
+    border-width: 0.5px;
+    border-color: black;
+}
+.createButton:hover{
+    border-radius: 6px;
+}
+.refresh{
+    margin-right: 15px;
+    border-width: 0.5px;
+    border-color: black;
+}
+.refresh:hover{
+    border-radius: 6px;
+}
 .text{
     display: inline;
 }
 .input input{
-    width: 218px;
-    height: 25px;
-    margin-top: 5px;
+    width: 170px;
+    height: 30px;
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     transition: 0.2s;
-    border-radius: 5px;
+    border-radius: 3px;
+    border-width: 0.5px;
 }
 .input input:hover{
     background-color: rgb(217, 217, 217);
     border-color: rgb(217, 217, 217);
+    border-radius: 6px;
     cursor: auto;
 }
 select{
@@ -60,7 +97,7 @@ select{
 table{
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 15px;
     background-color: rgb(235, 235, 235);
     table-layout: auto;
     border-collapse: separate;
@@ -109,26 +146,23 @@ input{
 select{
     cursor: pointer;
 }
-.create{
-    float: right;
-}
-.create button{
-    width: 150px;
-    height: 50px;
-    font-size: 16px;
-    transition: 0.4s;
-}
-.create button:hover{
-    border-radius: 12px;
-    color: rgb(235, 235, 235);
-    background-color: rgb(128, 128, 128);
-}
 .thButton button:hover{
     background-color: rgb(177, 177, 177);
     border-radius: 2px;
 }
 .selectbox{
-    margin-top: 40px;
-    margin-bottom: 15px;
+    margin-right: 15px;
+    height: 30px;
+    border-radius: 3px;
+    border-width: 0.5px;
+    border-color: black;
+    transition: 0.2s;
 }
-
+.selectbox:hover{
+    background-color: rgb(217, 217, 217);
+    border-color: rgb(217, 217, 217);
+    border-radius: 6px;
+}
+.searchInput{
+    margin-right: 15px;
+}
