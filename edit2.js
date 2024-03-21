@@ -38,7 +38,6 @@ async function getJobs() {
         `;
 
     const currentDate = new Date();
-    const formattedMinDate = currentDate.toISOString().slice(0, 16);
     const selectedFirstRunDate = new Date(job.firstRun);
     const isFirstRunInPast = selectedFirstRunDate < currentDate;
 

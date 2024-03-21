@@ -110,7 +110,6 @@ a{
     padding-left: 18px;
 }
 .message {
-    padding-left: 10px;
     color: rgba(0, 0, 0, 0.593);
     font-size: 18px;
     margin-top: 5px;
@@ -200,4 +199,8 @@ p{
 }
 .interval{
     margin-top: 19px;
+}
+.inputStatus{
+    position: absolute;
+    left: 613px; /* Anpassen des Abstands nach Bedarf */
 }
