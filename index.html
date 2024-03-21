@@ -4,7 +4,6 @@
 
 <head>
   <link href="index.css" rel="stylesheet">
-  <script src="https://unpkg.com/tablesort@5.0.2/dist/tablesort.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -50,59 +49,59 @@
     </div>
     <div class="create"><button class="createButton" title="create new job" onclick="createPage()">+</button></div>
   </div>
-  <table id="myTable">
+  <table id="myTable2">
     <thead>
       <tr>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortNumberTable(0)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">id</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortTable(1)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">name</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortTable(2)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">enabled</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortTable(3)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">status</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortDateTable(4)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">first run</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortDateTable(5)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">last run</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortDateTable(6)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">next run</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortDateTable(7)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">active until</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortNumberTable(8)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
           <div class="text">interval</div>
