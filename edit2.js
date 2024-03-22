@@ -72,7 +72,9 @@ async function getJobs() {
                 </div>
             </div>
 
-            <label>Interval (in seconds): </label><input placeholder="please enter new interval" class="interval" value="${job.schedule}">
+            <div class="flexInterval">
+                <label>Interval: </label><input placeholder="please enter new interval" class="interval" value="${job.schedule}">
+            </div>
             <div class="Buttons">
                 <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
                 <div class=back><button onclick="redirectToScheduler()">go back to scheduler</button></div>
