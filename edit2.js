@@ -73,15 +73,21 @@ async function getJobs() {
             </div>
 
             <div class="flexInterval">
-                <label>Interval: </label><input placeholder="please enter new interval" class="interval" value="${job.schedule}">
+                <div class="labelsInterval">
+                    <label>Interval: </label>
+                </div>
+                <div class="inputsInterval">
+                    <input placeholder="ww.dd.hh.mm.ss" class="interval" value="${job.schedule}">
+                </div>
             </div>
             <div class="Buttons">
-                <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
+                <div class=save><button onclick="saveElements()" class="saveButton">save</button></div>
                 <div class=back><button onclick="redirectToScheduler()">go back to scheduler</button></div>
-                <div class=delete><button onclick="deleteJob()">delete Job</button></div>
+                <div class=delete><button onclick="deleteJob()">delete job</button></div>
             </div>
             `;
     checkFirstRunInput();
+    calculateUnit();
 
     // Erstelle ein link-Element
     var linkElement = document.createElement('link');
@@ -109,6 +115,7 @@ async function getJobs() {
 
     const firstRunInput = document.querySelector('.firstRun');
     const activeuntilInput = document.querySelector('.activeuntil');
+    const intervalInput = document.querySelector('.interval');
 
     activeuntilInput.addEventListener('change', function () {
         const selectedActivUntil = new Date(activeuntilInput.value);
@@ -154,6 +161,15 @@ async function getJobs() {
         }
     })
 
+    intervalInput.addEventListener('click', function(){
+        Swal.fire({
+            title: "Informationen zum Format des Intervals",
+            text: "Damit das von Ihnen gewaehlte Interval richtig verwendet werden kann, muessen Sie es im Format ww.dd.hh.mm.ss uebergeben. Im ersten Part 'ww' geben Sie bitte die Anzahl der Wochen an, ueber die sich das Interval erstrecken soll. Das Selbe gilt fuer die anderen vier Parts, nur dass der zweite Part 'dd' fuer Tage, der dritte Part 'hh' fuer Stunden, der vierte Part 'mm' fuer Minuten und der fuenfte und letzte Part 'ss' fuer Sekunden steht. Falls Ihre gewuenschte Eingabe nur einstellig ist, bitten wir Sie darum die vorangehende Ziffer mit einer null zu bezeichnen. Falls sie einen Part gar nicht benoetigen, befuellen Sie diesen bitte mit zwei nullen.",
+            icon: "info"
+        });
+    })
+
+
     function checkFirstRunInput() {
         const firstRunInput = document.querySelector('.firstRun');
 
@@ -165,6 +181,25 @@ async function getJobs() {
         } else {
             firstRunInput.disabled = false;
         }
+    }
+
+    function calculateUnit() {
+        const intervalInput = document.querySelector('.interval');
+        let intervalValue = intervalInput.value; // Um sicherzustellen, dass der Wert als Zahl interpretiert wird
+    
+        const weeks = Math.floor(intervalValue / 604800);
+        intervalValue %= 604800;
+        const days = Math.floor(intervalValue / 86400);
+        intervalValue %= 86400;
+        const hours = Math.floor(intervalValue / 3600);
+        intervalValue %= 3600;
+        const minutes = Math.floor(intervalValue / 60);
+        intervalValue %= 60;
+        
+       intervalValue = `${weeks.toString().padStart(2, '0')}.${days.toString().padStart(2, '0')}.${hours.toString().padStart(2, '0')}.${minutes.toString().padStart(2, '0')}.${intervalValue.toString().padStart(2, '0')}`;
+    
+        // Die aktualisierten Werte in die Eingabefelder einfügen
+        intervalInput.value = intervalValue;
     }
 
 }
@@ -251,7 +286,28 @@ async function saveElements() {
     const isoformatedFirstRun = formatedFirstRun;
     const isoformatedActiveUntil = formatedActiveUntil;
 
-    //nur zur Überprüfung ob daten im richtigen Format vorliegen
+    const intervalInputValue = intervalInput.value;
+    let intervalRequestData;
+    formatInterval(intervalInputValue);
+
+    function formatInterval(interval){
+        var parts = interval.split(".");
+        var weekPart = parts[0];
+        var dayPart = parts[1];
+        var hourPart = parts[2];
+        var minPart = parts[3];
+        var secPart = parts[4];
+        console.log(weekPart);
+        console.log(dayPart);
+        console.log(hourPart);
+        console.log(minPart);
+        console.log(secPart);
+
+        intervalRequestData = (weekPart * 604800) + (dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+    }
+    const IntervalRequestData = intervalRequestData
+
+    // Nur zur Überprüfung ob Daten im richtigen Format vorliegen
     const firstRunDate = new Date(firstRunInput.value);
     const activeUntilDate = new Date(activeUntil.value);
     console.log('First Run:', firstRunDate);
@@ -268,13 +324,13 @@ async function saveElements() {
         lastRun: new Date(lastRunInput.value),
         activeFrom: isoformatedFirstRun,
         activeUntil: isoformatedActiveUntil,
-        schedule: intervalInput.value,
+        schedule: IntervalRequestData,
     };
 
     console.log('Request Data:', JSON.stringify(requestData));
 
     {
-        //PUT-Request
+        // PUT-Request
         const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
@@ -286,5 +342,6 @@ async function saveElements() {
         const newJob = await response.json();
         console.log('Neuer Job:', newJob);
     }
+    window.location.href = 'index.html';
 }
 getJobs();

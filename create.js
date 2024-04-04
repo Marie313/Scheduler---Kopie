@@ -11,8 +11,8 @@ function createForm() {
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun' } },
         { type: 'label', text: 'Activ Until: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil' } },
-        { type: 'label', text: 'Interval (in seconds): ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'every ... seconds', class: 'interval' } },
+        { type: 'label', text: 'Interval: ' },
+        { type: 'input', attributes: { type: 'text', placeholder: 'ww.dd.hh.mm.ss', class: 'interval' } },
     ];
 
     // Container-Element erstellen
@@ -44,6 +44,7 @@ function createForm() {
     // Überprüfung des First Run-Datums
     const firstRunInput = document.querySelector('.firstRun');
     const activeuntilInput = document.querySelector('.activeuntil');
+    const intervalInput = document.querySelector('.interval');
 
     firstRunInput.addEventListener('change', function () {
         const selectedDateFirst = new Date(firstRunInput.value);
@@ -54,7 +55,7 @@ function createForm() {
 
         if (selectedDateFirst < currentDate) {
             Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
+                title: "Ungueltige Eingabe!",
                 text: "Das ausgewaehlte Datum fuer 'first run' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
@@ -62,7 +63,7 @@ function createForm() {
         }
         if (selectedDateFirst > maxDate) {
             Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
+                title: "Ungueltige Eingabe!",
                 text: "Das ausgewaehlte Datum fuer 'first run' darf nicht mehr als ein Jahr in der Zukunft liegen.",
                 icon: "error"
             });
@@ -70,7 +71,7 @@ function createForm() {
         }
         if (selectedDateFirst > selectedActivUntil) {
             Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
+                title: "Ungueltige Eingabe!",
                 text: "Das ausgewaehlte Datum fuer 'first run' darf zeitlich gesehen nicht nach dem Datum fuer 'active until' liegen.",
                 icon: "error"
             });
@@ -78,14 +79,14 @@ function createForm() {
         }
     });
 
-    //Überprüfung des Active
+    //Überprüfung des ActiveUntil
     activeuntilInput.addEventListener('change', function () {
         const selectedActivUntil = new Date(activeuntilInput.value);
         const selectedDateFirst = new Date(firstRunInput.value);
         const currentDate = new Date();
         if (selectedActivUntil < selectedDateFirst) {
             Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
+                title: "Ungueltige Eingabe!",
                 text: "Das ausgewaehlte Datum fuer 'active until' darf zeitlich gesehen nicht vor dem Datum fuer 'first run' liegen.",
                 icon: "error"
             });
@@ -93,17 +94,25 @@ function createForm() {
         }
         if (selectedActivUntil < currentDate) {
             Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
+                title: "Ungueltige Eingabe!",
                 text: "Das ausgewaehlte Datum fuer 'active until' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
         }
     })
+    
+    intervalInput.addEventListener('click', function(){
+        Swal.fire({
+            title: "Informationen zum Format des Intervals",
+            text: "Damit das von Ihnen gewaehlte Interval richtig verwendet werden kann, muessen Sie es im Format ww.dd.hh.mm.ss uebergeben. Im ersten Part 'ww' geben Sie bitte die Anzahl der Wochen an, ueber die sich das Interval erstrecken soll. Das Selbe gilt fuer die anderen vier Parts, nur dass der zweite Part 'dd' fuer Tage, der dritte Part 'hh' fuer Stunden, der vierte Part 'mm' fuer Minuten und der fuenfte und letzte Part 'ss' fuer Sekunden steht. Falls Ihre gewuenschte Eingabe nur einstellig ist, bitten wir Sie darum die vorangehende Ziffer mit einer null zu bezeichnen. Falls sie einen Part gar nicht benoetigen, befuellen Sie diesen bitte mit zwei nullen.",
+            icon: "info"
+        });
+    })
 
     // Button zum Speichern
     const saveButtonContainer = document.createElement('div');
     saveButtonContainer.classList.add('save');
-    saveButtonContainer.innerHTML = '<button  onclick="saveElements()">Save</button>';
+    saveButtonContainer.innerHTML = '<button  onclick="saveElements()">save</button>';
     container.appendChild(saveButtonContainer);
 
     // Button zum Zurückkehren zum Scheduler
@@ -151,7 +160,6 @@ async function saveElements() {
     const firstRunInput = document.querySelector('.firstRun');
     const activeUntil = document.querySelector('.activeuntil');
     const scheduleInput = document.querySelector('.interval');
-
     const firstRunValue = new Date(firstRunInput.value);
     const activeUntilValue = new Date(activeUntil.value);
     let formatedFirstRun;
@@ -185,6 +193,27 @@ async function saveElements() {
     console.log('First Run Formated:', FormatedFirstRunn);
     console.log('Active Until Formated:', FormatedActiveUntill);
 
+    const scheduleInputValue = scheduleInput.value;
+    let intervalRequestData;
+    formatInterval(scheduleInputValue);
+
+    function formatInterval(interval){
+        var parts = interval.split(".");
+        var weekPart = parts[0];
+        var dayPart = parts[1];
+        var hourPart = parts[2];
+        var minPart = parts[3];
+        var secPart = parts[4];
+        console.log(weekPart);
+        console.log(dayPart);
+        console.log(hourPart);
+        console.log(minPart);
+        console.log(secPart);
+
+        intervalRequestData = (weekPart * 604800) + (dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+    }
+    const IntervalRequestData = intervalRequestData
+
     // Daten für den POST-Request vorbereiten
     const requestData = {
         name: nameInput.value,
@@ -192,7 +221,7 @@ async function saveElements() {
         status: "NONE",
         activeFrom: FormatedFirstRunn,
         activeUntil: FormatedActiveUntill,
-        schedule: scheduleInput.value,
+        schedule: IntervalRequestData,
     };
 
     console.log('Request Data:', JSON.stringify(requestData));
@@ -211,5 +240,6 @@ async function saveElements() {
         const newJob = await response.json();
         console.log('Neuer Job:', newJob);
     }
+    window.location.href = 'index.html';
 }
 createForm();

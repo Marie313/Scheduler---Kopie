@@ -72,11 +72,15 @@ button:hover{
 .border{
     border: 2px solid #000; 
     border-radius: 5px;
-    height: 690px;
+    height: 680px;
     width: 280px;
     padding-left: 50px;
     background-color: #f3f3f3;
     display: inline; /* Flex-Container verwenden */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .back button{
     margin-top: 20px;
@@ -103,11 +107,4 @@ p{
     font-size: 17px;
     margin-bottom: 30px;
     margin-left: 96px;
-}
-.interval-container{
-    display: flex;
-}
-select{
-    height: 20px;
-    width: 50px;
 }

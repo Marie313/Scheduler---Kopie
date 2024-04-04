@@ -291,3 +291,105 @@ function sortTable(n) {
       }
     }
   }
+
+  const formElements = [
+  { type: 'label', text: 'Name: ' },
+  { type: 'input', attributes: { type: 'text', placeholder: 'enter new name', class: 'name' } },
+  { type: 'label', text: 'Enabled: ' },
+  { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox' } },
+  { type: 'p', text: 'false', class: 'message' },
+  { type: 'label', text: 'First Run: ' },
+  { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun' } },
+  { type: 'label', text: 'Activ Until: ' },
+  { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil' } },
+  { type: 'label', text: 'Interval: ' },
+      { type: 'input', attributes: { type: 'text', placeholder: 'enter interval', class: 'interval' } },
+      { type: 'select', attributes: { class: 'interval-unit' }, options: [
+          { text: 'sec', value: 'sec' },
+          { text: 'min', value: 'min' },
+          { text: 'h', value: 'h' },
+          { text: 'd', value: 'd' },
+          { text: 'w', value: 'w' }
+      ]}
+];
+
+
+// Überprüfung des First Run-Datums
+const firstRunInput = document.querySelector('.firstRun');
+const activeuntilInput = document.querySelector('.activeuntil');
+const unitInput = document.querySelector('.unit');
+
+unitInput.addEventListener('change', function (){
+    if (unitInput.value != "sec" || unitInput.value != "min" || unitInput.value != "h" || unitInput.value != "d" || unitInput.value != "w"){
+        Swal.fire({
+            title: "Ungueltige Eingabe!",
+            text: "Die von Ihnen gewaehlte Einheit ist nicht hinterlegt. Bitte waehlen Sie zwischen: sec(Sekunden),  min(Minuten),  h(Stunden),  d(Tage),  w(Wochen). Andere Kuerzel koennen nicht erkannt und verarbeitet werden und sind somit ungueltig",
+            icon: "error"
+        });
+        unitInput.value = '';
+    }
+})
+rgb(237, 145, 145)
+rgb(145, 239, 134)
+
+function calculateUnit (schedule){
+    if ( schedule / 604800 >= 1){
+        const schedulew = schedule / 604800;
+        if ((schedulew % 2) != 0){
+            const schedulewd = schedulew % 2;
+            if ((schedulewd % 2) != 0){
+                const schedulewdh = schedulewd % 2;
+                if ((schedulewdh % 2) != 0){
+                    const schedulewdhmin = schedulewdh % 2;
+                    if ((schedulewdhmin % 2) != 0){
+                       const schedulewdhminsec = schedulewdhmin % 2;
+                       return schedule = schedulew + ' w ' + schedulewd + ' d ' + schedulewdh + ' h ' + schedulewdhmin + ' min ' + schedulewdhminsec + ' sec';
+                    }
+                    return schedule = schedulew + ' w ' + schedulewdh + ' h ' + schedulewdhmin + ' min';
+               }
+                return schedule = schedulew + ' w ' + schedulewd + ' d ' + schedulewdh + ' h';
+            }
+            return schedule = schedulew + ' w ' + schedulewd + ' d';
+        }
+        return schedule = schedulew + ' w';
+    }
+    if ( schedule / 86400 >= 1){
+        const scheduled = schedule / 86400;
+        if ((scheduled % 2) != 0){
+            const scheduledh = scheduled % 2;
+            if ((scheduledh % 2) != 0){
+                const scheduledhmin = scheduledh % 2;
+                if ((scheduledhmin % 2) != 0){
+                   const scheduledhminsec = scheduledhmin % 2;
+                   return schedule = scheduled + ' d ' + scheduledh + ' h ' + scheduledhmin + ' min ' + scheduledhminsec + ' sec';
+                }
+                return schedule = scheduledh + ' h ' + scheduledhmin + ' min';
+           }
+            return schedule = scheduled + ' d ' + scheduledh + ' h';
+        }
+        return schedule = scheduled + ' d';
+    }
+    if ( schedule / 3600 >= 1){
+        const scheduleh = schedule / 3600;
+        if ((scheduleh % 2) != 0){
+             const schedulehmin = scheduleh % 2;
+             if ((schedulehmin % 2) != 0){
+                const schedulehminsec = schedulehmin % 2;
+                return schedule =scheduleh + ' h ' + schedulehmin + ' min ' + schedulehminsec + ' sec';
+             }
+             return schedule = scheduleh + ' h ' + schedulehmin + ' min';
+        }
+        return schedule = scheduleh + ' h';
+    }
+    if ( schedule / 60 >= 1){
+        const schedulemin = schedule / 60;
+        if ((schedulemin % 2) != 0){
+            const scheduleminsec = schedulemin % 2;
+            return schedule = schedulemin + ' min ' + scheduleminsec + ' sec';
+        }
+        return schedule = schedulemin + ' min';
+    }
+    else {
+        return schedule + ' sec'
+    }
+}

@@ -166,4 +166,8 @@ select{
 .searchInput{
     margin-right: 15px;
 }
-
+.formatInterval{
+    font-size: 13px;
+    color: #888888;
+    padding-left: 10px;
+}

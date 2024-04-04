@@ -128,8 +128,10 @@ input[type="checkbox"]{
     background-color: #f3f3f3;
     border-radius: 5px;
     padding: 40px;
-    margin-top: 20px;
-    position: relative;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .idValue{
     position: absolute;
@@ -185,9 +187,7 @@ p{
 }
 .inputsName input[type="checkbox"]{
     margin-right: 25px;
-}
-.inputsName input{
-    margin-right: 110px;
+    margin-left: 35px;
 }
 .inputsName p{
     margin-right: 120px;
@@ -206,4 +206,25 @@ p{
 .inputStatus{
     position: absolute;
     left: 613px; /* Anpassen des Abstands nach Bedarf */
+}
+.flexInterval{
+    display: flex;
+    flex-direction: column;
+}
+.labelsInterval{
+    display: flex;
+    flex-direction: row; /* Setze die Ausrichtung der Labels und Inputs auf Reihen */
+    margin-bottom: 10px; /* Füge Platz zwischen den Zeilen hinzu */
+}
+.labelsInterval label{
+    margin-right: 218px;
+}
+.inputsInterval{
+    display: flex;
+    flex-direction: row; /* Setze die Ausrichtung der Labels und Inputs auf Reihen */
+    margin-bottom: 10px; /* Füge Platz zwischen den Zeilen hinzu */
+}
+.inputsInterval input{
+    margin-right: 50px;
+    margin-top: 5px;
 }
