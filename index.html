@@ -4,6 +4,7 @@
 
 <head>
   <link href="index.css" rel="stylesheet">
+  <meta charset="UTF-8">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
@@ -102,13 +103,11 @@
           <div class="text">active until</div>
         </th>
         <th>
-          <div class="thButton"><button class="rerange" onclick="sortTable(8)"><svg width="16" height="16">
+          <div class="thButton"><button class="rerange" onclick="sortIntervalTable(8)"><svg width="16" height="16">
                 <use xlink:href="#rearrange-icon"></use>
               </svg></button></div>
-          <div class="text">
+          <div class="text" title="Format: d hh:mm:ss">
             interval
-            <br>
-            <div class="formatInterval" title ="Format: weekweek.dayday.hourhour.minuteminute.secondsecond">(ww.dd.hh.mm.ss)</div>
           </div>
         </th>
         <th>edit / delete</th>

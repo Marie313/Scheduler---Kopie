@@ -89,18 +89,21 @@ function displayJobs(jobs) {
         }
     }
 
-    function calculateUnit (seconds){
-        const weeks = Math.floor(seconds / 604800);
-        seconds %= 604800;
-        const days = Math.floor(seconds / 86400);
-        seconds %= 86400;
-        const hours = Math.floor(seconds / 3600);
-        seconds %= 3600;
-        const minutes = Math.floor(seconds / 60);
-        seconds %= 60;
+        function calculateUnit(seconds) {
+            const days = Math.floor(seconds / 86400);
+            seconds %= 86400;
+            const hours = Math.floor(seconds / 3600);
+            seconds %= 3600;
+            const minutes = Math.floor(seconds / 60);
+            seconds %= 60;
         
-        return `${weeks.toString().padStart(2, '0')}.${days.toString().padStart(2, '0')}.${hours.toString().padStart(2, '0')}.${minutes.toString().padStart(2, '0')}.${seconds.toString().padStart(2, '0')}`;
-    }
+            // Überprüfen, ob Tage vorhanden sind, und entsprechend formatieren
+            if (days > 0) {
+                return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
 
     async function deleteJob(jobId) {
         try {
@@ -197,6 +200,68 @@ function sortTable(n) {
           switching = true;
         }
       }
+    }
+}
+
+function sortIntervalTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable2");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        if (dir == "asc") {
+            if (getIntervalFromFormat(x.innerHTML) > getIntervalFromFormat(y.innerHTML) ) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+              }
+        } else if (dir == "desc") {
+            if (getIntervalFromFormat(x.innerHTML) < getIntervalFromFormat(y.innerHTML) ) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+}
+
+function getIntervalFromFormat(interval){
+    if (interval.split("d")[0] > 0){
+        var intervalSplit = interval.split("d");
+        var dateInterval = intervalSplit[0];
+        var timeInterval = intervalSplit[1].split(":");
+        var hourInterval = timeInterval[0];
+        var minInterval = timeInterval[1];
+        var secInterval = timeInterval[2];
+
+        var formatedInterval = (dateInterval * 86400) + (hourInterval * 3600) + (minInterval * 60) + (secInterval * 1);
+        return formatedInterval;
+    }
+    else{
+        var timeInterval = interval.split(":");
+        var hourInterval = timeInterval[0];
+        var minInterval = timeInterval[1];
+        var secInterval = timeInterval[2];
+
+        var formatedInterval =(hourInterval * 3600) + (minInterval * 60) + (secInterval * 1);
+        return formatedInterval;
     }
 }
 

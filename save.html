@@ -393,3 +393,19 @@ function calculateUnit (schedule){
         return schedule + ' sec'
     }
 }
+
+
+const days = Math.floor(intervalValue / 86400);
+        intervalValue %= 86400;
+        const hours = Math.floor(intervalValue / 3600);
+        intervalValue %= 3600;
+        const minutes = Math.floor(intervalValue / 60);
+        intervalValue %= 60;
+    
+        // Überprüfen, ob Tage vorhanden sind, und entsprechend formatieren
+        if (days > 0) {
+            return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${intervalValue.toString().padStart(2, '0')}`;
+        } 
+        else {
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${intervalValue.toString().padStart(2, '0')}`;
+        }

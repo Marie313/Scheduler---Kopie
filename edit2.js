@@ -33,7 +33,7 @@ async function getJobs() {
                 <input type="checkbox" class="checkboxero" ${job.enabled ? 'checked' : ''}>
             </div>
             <p class="message" id="message">
-            ${job.enabled ? 'true' : 'false'}
+            ${job.enabled ? 'yes' : 'no'}
             </p>
         `;
 
@@ -66,7 +66,7 @@ async function getJobs() {
                     <label>Active Until: </label>
                 </div>
                 <div class="inputs">
-                    <input class="firstRun" type="datetime-local" value="${job.activeFrom}" ${isFirstRunInPast ? 'disabled' : ''}>
+                    <input class="firstRun" type="datetime-local" value="${job.activeFrom}">
                     <input class="lastRun" type="datetime-local" value="${job.lastRun}" disabled>
                     <input class="activeuntil" type="datetime-local" value="${job.activeUntil}">
                 </div>
@@ -77,16 +77,63 @@ async function getJobs() {
                     <label>Interval: </label>
                 </div>
                 <div class="inputsInterval">
-                    <input placeholder="ww.dd.hh.mm.ss" class="interval" value="${job.schedule}">
+                    <input placeholder="0d hh:mm:ss" class="interval" value="${job.schedule}">
                 </div>
             </div>
             <div class="Buttons">
-                <div class=save><button onclick="saveElements()" class="saveButton">save</button></div>
-                <div class=back><button onclick="redirectToScheduler()">go back to scheduler</button></div>
-                <div class=delete><button onclick="deleteJob()">delete job</button></div>
+                <div class=save><button onclick="saveElements()" class="saveButton">Save</button></div>
+                <div class=back><button onclick="redirectToScheduler()">Go back to scheduler</button></div>
+                <div class=delete><button onclick="deleteJob()">Delete job</button></div>
             </div>
             `;
-    checkFirstRunInput();
+
+    const firstRunInput = document.querySelector('.firstRun');
+    const activeuntilInput = document.querySelector('.activeuntil');
+    const intervalInput = document.querySelector('.interval');
+        
+    activeuntilInput.addEventListener('change', function () {
+        const selectedActivUntil = new Date(activeuntilInput.value);
+        const selectedDateFirst = new Date(firstRunInput.value);
+        const currentDate = new Date();
+        if (selectedActivUntil < selectedDateFirst) {
+            Swal.fire({
+                title: "Fehler beim Speichern der Änderung!",
+                text: "Das ausgewählte Datum für 'active until' darf zeitlich gesehen nicht vor 'first run' liegen.",
+                icon: "error"
+            });
+            activeuntilInput.value = '';
+        }
+        if (selectedActivUntil < currentDate) {
+            Swal.fire({
+                title: "Fehler beim Speichern der Änderung!",
+                text: "Das ausgewählte Datum für 'active until' darf nicht in der Vergangenheit liegen.",
+                icon: "error"
+            });
+            activeuntilInput.value = '';
+        }
+    })
+        
+    firstRunInput.addEventListener('change', function () {
+        const selectedActivUntil = new Date(activeuntilInput.value);
+        const selectedDateFirst = new Date(firstRunInput.value);
+        const currentDate = new Date();
+        if (selectedDateFirst < currentDate) {
+            Swal.fire({
+                title: "Fehler beim Speichern der Änderung!",
+                text: "Das ausgewählte Datum für 'first run' darf nicht in der Vergangenheit liegen.",
+                icon: "error"
+            });
+            firstRunInput.value = '';
+        }
+        if (selectedDateFirst > selectedActivUntil) {
+            Swal.fire({
+                title: "Fehler beim Speichern der Änderung!",
+                text: "Das ausgewählte Datum für 'first run' darf zeitlich gesehen nicht nach dem Datum für 'active until' liegen.",
+                icon: "error"
+            });
+            firstRunInput.value = '';
+        }
+    })
     calculateUnit();
 
     // Erstelle ein link-Element
@@ -105,98 +152,32 @@ async function getJobs() {
     checkbox.forEach(function (checkbox, index) {
         checkbox.addEventListener('change', function () {
             if (checkbox.checked) {
-                message[index].textContent = 'true'
+                message[index].textContent = 'yes'
             }
             else {
-                message[index].textContent = 'false'
+                message[index].textContent = 'no'
             }
         });
     });
 
-    const firstRunInput = document.querySelector('.firstRun');
-    const activeuntilInput = document.querySelector('.activeuntil');
-    const intervalInput = document.querySelector('.interval');
-
-    activeuntilInput.addEventListener('change', function () {
-        const selectedActivUntil = new Date(activeuntilInput.value);
-        const selectedDateFirst = new Date(firstRunInput.value);
-        const currentDate = new Date();
-        if (selectedActivUntil < selectedDateFirst) {
-            Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
-                text: "Das ausgewaehlte Datum fuer 'active until' darf zeitlich gesehen nicht vor 'first run' liegen.",
-                icon: "error"
-            });
-            activeuntilInput.value = '';
-        }
-        if (selectedActivUntil < currentDate) {
-            Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
-                text: "Das ausgewaehlte Datum fuer 'active until' darf nicht in der Vergangenheit liegen.",
-                icon: "error"
-            });
-            activeuntilInput.value = '';
-        }
-    })
-
-    firstRunInput.addEventListener('change', function () {
-        const selectedActivUntil = new Date(activeuntilInput.value);
-        const selectedDateFirst = new Date(firstRunInput.value);
-        const currentDate = new Date();
-        if (selectedDateFirst < currentDate) {
-            Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
-                text: "Das ausgewaehlte Datum fuer 'first run' darf nicht in der Vergangenheit liegen.",
-                icon: "error"
-            });
-            firstRunInput.value = '';
-        }
-        if (selectedDateFirst > selectedActivUntil) {
-            Swal.fire({
-                title: "Fehler beim Speichern der Aenderung!",
-                text: "Das ausgewaehlte Datum fuer 'first run' darf zeitlich gesehen nicht nach dem Datum fuer 'active until' liegen.",
-                icon: "error"
-            });
-            firstRunInput.value = '';
-        }
-    })
-
-    intervalInput.addEventListener('click', function(){
-        Swal.fire({
-            title: "Informationen zum Format des Intervals",
-            text: "Damit das von Ihnen gewaehlte Interval richtig verwendet werden kann, muessen Sie es im Format ww.dd.hh.mm.ss uebergeben. Im ersten Part 'ww' geben Sie bitte die Anzahl der Wochen an, ueber die sich das Interval erstrecken soll. Das Selbe gilt fuer die anderen vier Parts, nur dass der zweite Part 'dd' fuer Tage, der dritte Part 'hh' fuer Stunden, der vierte Part 'mm' fuer Minuten und der fuenfte und letzte Part 'ss' fuer Sekunden steht. Falls Ihre gewuenschte Eingabe nur einstellig ist, bitten wir Sie darum die vorangehende Ziffer mit einer null zu bezeichnen. Falls sie einen Part gar nicht benoetigen, befuellen Sie diesen bitte mit zwei nullen.",
-            icon: "info"
-        });
-    })
-
-
-    function checkFirstRunInput() {
-        const firstRunInput = document.querySelector('.firstRun');
-
-        const currentDate = new Date();
-        const selectedFirstRunDate = new Date(firstRunInput.value);
-
-        if (selectedFirstRunDate < currentDate) {
-            firstRunInput.disabled = true;
-        } else {
-            firstRunInput.disabled = false;
-        }
-    }
-
     function calculateUnit() {
         const intervalInput = document.querySelector('.interval');
         let intervalValue = intervalInput.value; // Um sicherzustellen, dass der Wert als Zahl interpretiert wird
-    
-        const weeks = Math.floor(intervalValue / 604800);
-        intervalValue %= 604800;
         const days = Math.floor(intervalValue / 86400);
         intervalValue %= 86400;
         const hours = Math.floor(intervalValue / 3600);
         intervalValue %= 3600;
         const minutes = Math.floor(intervalValue / 60);
         intervalValue %= 60;
-        
-       intervalValue = `${weeks.toString().padStart(2, '0')}.${days.toString().padStart(2, '0')}.${hours.toString().padStart(2, '0')}.${minutes.toString().padStart(2, '0')}.${intervalValue.toString().padStart(2, '0')}`;
+    
+        // Überprüfen, ob Tage vorhanden sind, und entsprechend formatieren
+        if (days > 0) {
+            intervalValue = `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${intervalValue.toString().padStart(2, '0')}`;
+        } 
+        else {
+            intervalValue = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${intervalValue.toString().padStart(2, '0')}`;
+        }
+       
     
         // Die aktualisierten Werte in die Eingabefelder einfügen
         intervalInput.value = intervalValue;
@@ -207,8 +188,8 @@ async function getJobs() {
 //Funktion zum Zurückkehren zum Scheduler
 function redirectToScheduler() {
     Swal.fire({
-        title: "Zurueckkehren zum Scheduler?",
-        text: "Die geaenderten Daten werden nicht automatisch gespeichert!",
+        title: "Zurückkehren zum Scheduler?",
+        text: "Die geänderten Daten werden nicht automatisch gespeichert!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -222,8 +203,8 @@ function redirectToScheduler() {
 
 async function deleteJob() {
     Swal.fire({
-        title: "Wollen Sie diesen Job wirklich loeschen",
-        text: "Wenn sie dies bestaetigen wird der ausgewaehlte Job augenblicklich und unwiderruflich geloescht!",
+        title: "Wollen Sie diesen Job wirklich löschen",
+        text: "Wenn sie dies bestätigen wird der ausgewählte Job augenblicklich und unwiderruflich gelöscht!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -286,26 +267,28 @@ async function saveElements() {
     const isoformatedFirstRun = formatedFirstRun;
     const isoformatedActiveUntil = formatedActiveUntil;
 
-    const intervalInputValue = intervalInput.value;
+    const scheduleInputValue = intervalInput.value;
     let intervalRequestData;
-    formatInterval(intervalInputValue);
+    formatInterval(scheduleInputValue);
 
     function formatInterval(interval){
-        var parts = interval.split(".");
-        var weekPart = parts[0];
-        var dayPart = parts[1];
-        var hourPart = parts[2];
-        var minPart = parts[3];
-        var secPart = parts[4];
-        console.log(weekPart);
+        var parts = interval.split("d");
+        var dayPart = parts[0];
+        var timePart = parts[1];
+        var tparts =timePart.split(":")
+        var hourPart = tparts[0];
+        var minPart = tparts[1];
+        var secPart = tparts[2];
         console.log(dayPart);
+        console.log(timePart);
         console.log(hourPart);
         console.log(minPart);
         console.log(secPart);
 
-        intervalRequestData = (weekPart * 604800) + (dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+        intervalRequestData =(dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
     }
     const IntervalRequestData = intervalRequestData
+
 
     // Nur zur Überprüfung ob Daten im richtigen Format vorliegen
     const firstRunDate = new Date(firstRunInput.value);

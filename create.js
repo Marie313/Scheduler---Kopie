@@ -4,15 +4,17 @@ function createForm() {
     const formElements = [
         { type: 'label', text: 'Name: ' },
         { type: 'input', attributes: { type: 'text', placeholder: 'enter new name', class: 'name' } },
-        { type: 'label', text: 'Enabled: ' },
-        { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox' } },
-        { type: 'p', text: 'false', class: 'message' },
+        { type: 'label', text: 'Enabled: ', attributes: {class:'enabledLabel'}},
+        { type: 'br'},
+        { type: 'input', attributes: { type: 'checkbox', class: 'my-checkbox'} },
+        { type: 'label', text: 'no', attributes:{class: 'message'}},
+        { type: 'br'},
         { type: 'label', text: 'First Run: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun' } },
         { type: 'label', text: 'Activ Until: ' },
         { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil' } },
         { type: 'label', text: 'Interval: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: 'ww.dd.hh.mm.ss', class: 'interval' } },
+        { type: 'input', attributes: { type: 'text', placeholder: '0d hh:mm:ss', class: 'interval' } },
     ];
 
     // Container-Element erstellen
@@ -44,7 +46,6 @@ function createForm() {
     // Überprüfung des First Run-Datums
     const firstRunInput = document.querySelector('.firstRun');
     const activeuntilInput = document.querySelector('.activeuntil');
-    const intervalInput = document.querySelector('.interval');
 
     firstRunInput.addEventListener('change', function () {
         const selectedDateFirst = new Date(firstRunInput.value);
@@ -55,24 +56,24 @@ function createForm() {
 
         if (selectedDateFirst < currentDate) {
             Swal.fire({
-                title: "Ungueltige Eingabe!",
-                text: "Das ausgewaehlte Datum fuer 'first run' darf nicht in der Vergangenheit liegen.",
+                title: "Ungültige Eingabe!",
+                text: "Das ausgewählte Datum für 'first run' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
             firstRunInput.value = '';
         }
         if (selectedDateFirst > maxDate) {
             Swal.fire({
-                title: "Ungueltige Eingabe!",
-                text: "Das ausgewaehlte Datum fuer 'first run' darf nicht mehr als ein Jahr in der Zukunft liegen.",
+                title: "Ungültige Eingabe!",
+                text: "Das ausgewählte Datum für 'first run' darf nicht mehr als ein Jahr in der Zukunft liegen.",
                 icon: "error"
             });
             firstRunInput.value = '';
         }
         if (selectedDateFirst > selectedActivUntil) {
             Swal.fire({
-                title: "Ungueltige Eingabe!",
-                text: "Das ausgewaehlte Datum fuer 'first run' darf zeitlich gesehen nicht nach dem Datum fuer 'active until' liegen.",
+                title: "Ungültige Eingabe!",
+                text: "Das ausgewählte Datum für 'first run' darf zeitlich gesehen nicht nach dem Datum für 'active until' liegen.",
                 icon: "error"
             });
             firstRunInput.value = '';
@@ -86,39 +87,31 @@ function createForm() {
         const currentDate = new Date();
         if (selectedActivUntil < selectedDateFirst) {
             Swal.fire({
-                title: "Ungueltige Eingabe!",
-                text: "Das ausgewaehlte Datum fuer 'active until' darf zeitlich gesehen nicht vor dem Datum fuer 'first run' liegen.",
+                title: "Ungültige Eingabe!",
+                text: "Das ausgewählte Datum für 'active until' darf zeitlich gesehen nicht vor dem Datum für 'first run' liegen.",
                 icon: "error"
             });
             activeuntilInput.value = '';
         }
         if (selectedActivUntil < currentDate) {
             Swal.fire({
-                title: "Ungueltige Eingabe!",
-                text: "Das ausgewaehlte Datum fuer 'active until' darf nicht in der Vergangenheit liegen.",
+                title: "Ungültige Eingabe!",
+                text: "Das ausgewählte Datum für 'active until' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
         }
-    })
-    
-    intervalInput.addEventListener('click', function(){
-        Swal.fire({
-            title: "Informationen zum Format des Intervals",
-            text: "Damit das von Ihnen gewaehlte Interval richtig verwendet werden kann, muessen Sie es im Format ww.dd.hh.mm.ss uebergeben. Im ersten Part 'ww' geben Sie bitte die Anzahl der Wochen an, ueber die sich das Interval erstrecken soll. Das Selbe gilt fuer die anderen vier Parts, nur dass der zweite Part 'dd' fuer Tage, der dritte Part 'hh' fuer Stunden, der vierte Part 'mm' fuer Minuten und der fuenfte und letzte Part 'ss' fuer Sekunden steht. Falls Ihre gewuenschte Eingabe nur einstellig ist, bitten wir Sie darum die vorangehende Ziffer mit einer null zu bezeichnen. Falls sie einen Part gar nicht benoetigen, befuellen Sie diesen bitte mit zwei nullen.",
-            icon: "info"
-        });
     })
 
     // Button zum Speichern
     const saveButtonContainer = document.createElement('div');
     saveButtonContainer.classList.add('save');
-    saveButtonContainer.innerHTML = '<button  onclick="saveElements()">save</button>';
+    saveButtonContainer.innerHTML = '<button  onclick="saveElements()">Save</button>';
     container.appendChild(saveButtonContainer);
 
     // Button zum Zurückkehren zum Scheduler
     const backButtonContainer = document.createElement('div');
     backButtonContainer.classList.add('back');
-    backButtonContainer.innerHTML = '<button onclick="redirectToScheduler()">go back to scheduler</button>';
+    backButtonContainer.innerHTML = '<button onclick="redirectToScheduler()">Go back to scheduler</button>';
     container.appendChild(backButtonContainer);
 
     document.body.appendChild(container);
@@ -129,7 +122,7 @@ function createForm() {
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
             const statusElement = checkbox.nextElementSibling; // Nächstes Element nach der Checkbox
-            statusElement.textContent = checkbox.checked ? 'true' : 'false';
+            statusElement.textContent = checkbox.checked ? 'yes' : 'no';
         });
     });
 }
@@ -137,8 +130,8 @@ function createForm() {
 // Funktion zum Umleiten zur Index-Seite
 function redirectToScheduler() {
     Swal.fire({
-        title: "Zurueckkehren zum Scheduler?",
-        text: "Die geaenderten Daten werden nicht automatisch gespeichert!",
+        title: "Zurückkehren zum Scheduler?",
+        text: "Die geänderten Daten werden nicht automatisch gespeichert!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -198,19 +191,20 @@ async function saveElements() {
     formatInterval(scheduleInputValue);
 
     function formatInterval(interval){
-        var parts = interval.split(".");
-        var weekPart = parts[0];
-        var dayPart = parts[1];
-        var hourPart = parts[2];
-        var minPart = parts[3];
-        var secPart = parts[4];
-        console.log(weekPart);
+        var parts = interval.split("d");
+        var dayPart = parts[0];
+        var timePart = parts[1];
+        var tparts =timePart.split(":")
+        var hourPart = tparts[0];
+        var minPart = tparts[1];
+        var secPart = tparts[2];
         console.log(dayPart);
+        console.log(timePart);
         console.log(hourPart);
         console.log(minPart);
         console.log(secPart);
 
-        intervalRequestData = (weekPart * 604800) + (dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+        intervalRequestData =(dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
     }
     const IntervalRequestData = intervalRequestData
 

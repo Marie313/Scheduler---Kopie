@@ -18,8 +18,10 @@ h1{
 input[type="checkbox"]{
     height: 18px;
     width: 18px;
-    margin-left: 105px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    margin-right: 7px;
+    margin-top: 25px;
+    display: inline;
 }
 input{
     cursor: pointer;
@@ -32,13 +34,20 @@ input{
     border-right: none;
     display: flex;
     padding: 3px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 30px;
     background-color: #f3f3f3;
 }
 input::placeholder{
     font-size: 17px;
     color: rgb(125, 125, 125);
+}
+.message{
+    font-size: 18px;
+    font-weight: lighter;
+    color:rgb(125, 125, 125);
+    margin-left: 5px;
+    vertical-align: 3px; /* Fügt die Vertikal-Ausrichtung hinzu */
 }
 label{
     font-family: Arial, Helvetica, sans-serif;
@@ -60,8 +69,6 @@ button{
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    width: 150px;
-    height: 30px;
     transition: .4s;
 }
 button:hover{
@@ -78,12 +85,15 @@ button:hover{
     background-color: #f3f3f3;
     display: inline; /* Flex-Container verwenden */
     position: fixed;
+    align-items: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 .back button{
     margin-top: 20px;
+    width: 150px;
+    height: 30px;
 }
 .save button{
     background-color: rgb(145, 239, 134);
@@ -102,9 +112,4 @@ button:hover{
     border-radius: 12px;
     color: rgba(0, 0, 0, 0.593);
     background-color: rgb(224, 224, 224);
-}
-p{
-    font-size: 17px;
-    margin-bottom: 30px;
-    margin-left: 96px;
 }
