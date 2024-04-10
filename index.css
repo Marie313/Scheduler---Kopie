@@ -111,7 +111,8 @@ th{
 td{
     text-align: center;
     border-left: none;
-    padding-bottom: 15px;
+    padding-bottom: 9px;
+    padding-top: 9px;
     font-size: 14px;
 }
 th, td{

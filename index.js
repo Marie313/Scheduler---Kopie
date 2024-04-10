@@ -77,14 +77,14 @@ function displayJobs(jobs) {
     function getBackgroundColor(status) {
         switch (status) {
             case 'SUCCESS':
-                return 'rgb(122, 255, 135)';
+                return 'rgba(122, 255, 135, 0.91)';
             case 'WARNING':
-                return 'rgb(255, 253, 124)';
+                return 'rgba(255, 253, 124, 0.95)';
             case 'FAILED':
-                return 'rgb(255, 136, 146)';
+                return 'rgba(255, 136, 146, 0.95)';
             case 'NONE':
                 return 'rgba(225, 225, 225, 1)';
-            default:
+            default:c
                 return '';
         }
     }
@@ -393,13 +393,13 @@ function filterTable(selectedStatus, searchTerm) {
         var colorMatches =
             (selectedStatus === "all") ||
             (selectedStatus === "SUCCESS" && (
-                backgroundColor === "rgba(122, 255, 135, 1)" || backgroundColor === "rgb(122, 255, 135)"
+                backgroundColor === "rgba(122, 255, 135, 0.91)" || backgroundColor === "rgb(122, 255, 135)"
             )) ||
             (selectedStatus === "FAILED" && (
-                backgroundColor === "rgba(255, 136, 146, 1)" || backgroundColor === "rgb(255, 136, 146)"
+                backgroundColor === "rgba(255, 136, 146, 0.95)" || backgroundColor === "rgb(255, 136, 146)"
             )) ||
             (selectedStatus === "WARNING" && (
-                backgroundColor === "rgba(255, 253, 124, 1)" || backgroundColor === "rgb(255, 253, 124)"
+                backgroundColor === "rgba(255, 253, 124, 0.95)" || backgroundColor === "rgb(255, 253, 124)"
             ));
 
         // Bedingungen für die Suche

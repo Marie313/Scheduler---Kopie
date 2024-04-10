@@ -272,20 +272,34 @@ async function saveElements() {
     formatInterval(scheduleInputValue);
 
     function formatInterval(interval){
-        var parts = interval.split("d");
-        var dayPart = parts[0];
-        var timePart = parts[1];
-        var tparts =timePart.split(":")
-        var hourPart = tparts[0];
-        var minPart = tparts[1];
-        var secPart = tparts[2];
-        console.log(dayPart);
-        console.log(timePart);
-        console.log(hourPart);
-        console.log(minPart);
-        console.log(secPart);
+        if (interval.split("d")[0] > 0){
+            var parts = interval.split("d");
+            var dayPart = parts[0];
+            var timePart = parts[1];
+            var tparts =timePart.split(":")
+            var hourPart = tparts[0];
+            var minPart = tparts[1];
+            var secPart = tparts[2];
+            console.log(dayPart);
+            console.log(timePart);
+            console.log(hourPart);
+            console.log(minPart);
+            console.log(secPart);
 
-        intervalRequestData =(dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+            intervalRequestData =(dayPart * 86400) + (hourPart * 3600) + (minPart * 60) + (secPart * 1);
+        }
+        else{
+            var tparts =interval.split(":")
+            var hourPart = tparts[0];
+            var minPart = tparts[1];
+            var secPart = tparts[2];
+            console.log(timePart);
+            console.log(hourPart);
+            console.log(minPart);
+            console.log(secPart);
+
+            intervalRequestData =(hourPart * 3600) + (minPart * 60) + (secPart * 1);
+        }
     }
     const IntervalRequestData = intervalRequestData
 
