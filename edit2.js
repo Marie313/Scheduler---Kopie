@@ -39,6 +39,7 @@ async function getJobs() {
 
     const currentDate = new Date();
     const selectedFirstRunDate = new Date(job.firstRun);
+    const formattedCurrentDate = currentDate.toISOString().slice(0, -8);
     const isFirstRunInPast = selectedFirstRunDate < currentDate;
 
 
@@ -66,9 +67,9 @@ async function getJobs() {
                     <label>Active Until: </label>
                 </div>
                 <div class="inputs">
-                    <input class="firstRun" type="datetime-local" value="${job.activeFrom}">
+                    <input class="firstRun" type="datetime-local" value="${job.activeFrom}" min=${formattedCurrentDate}>
                     <input class="lastRun" type="datetime-local" value="${job.lastRun}" disabled>
-                    <input class="activeuntil" type="datetime-local" value="${job.activeUntil}">
+                    <input class="activeuntil" type="datetime-local" value="${job.activeUntil}" min=${formattedCurrentDate}>
                 </div>
             </div>
 
@@ -77,7 +78,7 @@ async function getJobs() {
                     <label>Interval: </label>
                 </div>
                 <div class="inputsInterval">
-                    <input placeholder="0d hh:mm:ss" class="interval" value="${job.schedule}">
+                    <input placeholder="(dd)d (hh):(mm):(ss)" class="interval" value="${job.schedule}">
                 </div>
             </div>
             <div class="Buttons">
@@ -97,7 +98,7 @@ async function getJobs() {
         const currentDate = new Date();
         if (selectedActivUntil < selectedDateFirst) {
             Swal.fire({
-                title: "Fehler beim Speichern der Änderung!",
+                title: "Ungültige Eingabe!",
                 text: "Das ausgewählte Datum für 'active until' darf zeitlich gesehen nicht vor 'first run' liegen.",
                 icon: "error"
             });
@@ -105,7 +106,7 @@ async function getJobs() {
         }
         if (selectedActivUntil < currentDate) {
             Swal.fire({
-                title: "Fehler beim Speichern der Änderung!",
+                title: "Ungültige Eingabe!",
                 text: "Das ausgewählte Datum für 'active until' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
@@ -119,7 +120,7 @@ async function getJobs() {
         const currentDate = new Date();
         if (selectedDateFirst < currentDate) {
             Swal.fire({
-                title: "Fehler beim Speichern der Änderung!",
+                title: "Ungültige Eingabe!",
                 text: "Das ausgewählte Datum für 'first run' darf nicht in der Vergangenheit liegen.",
                 icon: "error"
             });
@@ -127,13 +128,31 @@ async function getJobs() {
         }
         if (selectedDateFirst > selectedActivUntil) {
             Swal.fire({
-                title: "Fehler beim Speichern der Änderung!",
+                title: "Ungültige Eingabe!",
                 text: "Das ausgewählte Datum für 'first run' darf zeitlich gesehen nicht nach dem Datum für 'active until' liegen.",
                 icon: "error"
             });
             firstRunInput.value = '';
         }
     })
+
+    intervalInput.addEventListener('change', function() {
+        const interval = intervalInput.value; // Leerzeichen entfernen
+        const regex = /^(\d+d\s)?(\d{1,2}:\d{1,2}:\d{1,2})$/; // Regulärer Ausdruck für das erwartete Format
+    
+        if (!regex.test(interval)) { // Überprüfen, ob das Format gültig ist
+            Swal.fire({
+                title: "Ungültige Eingabe!",
+                text: "Die Eingabe entspricht nicht dem erwarteten Format (dd)d (hh):(mm):(ss).",
+                icon: "error"
+            });
+            intervalInput.value=''; 
+        }
+        
+        else{
+            console.log('all correct');
+        }
+    });
     calculateUnit();
 
     // Erstelle ein link-Element

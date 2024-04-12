@@ -21,6 +21,15 @@ h1{
 .heading{
     text-decoration: underline;
 }
+.lastRun{
+    cursor: auto;
+}
+.inputStatus{
+    cursor: auto;
+}
+.message{
+    cursor: default;
+}
 input{
     cursor: pointer;
     height: 15px;

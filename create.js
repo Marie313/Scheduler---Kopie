@@ -1,5 +1,7 @@
 //create.js
 function createForm() {
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toISOString().slice(0, -8);
 
     const formElements = [
         { type: 'label', text: 'Name: ' },
@@ -10,11 +12,11 @@ function createForm() {
         { type: 'label', text: 'no', attributes:{class: 'message'}},
         { type: 'br'},
         { type: 'label', text: 'First Run: ' },
-        { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun' } },
+        { type: 'input', attributes: { type: 'datetime-local', class: 'firstRun', min:`${formattedCurrentDate}` } },
         { type: 'label', text: 'Activ Until: ' },
-        { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil' } },
+        { type: 'input', attributes: { type: 'datetime-local', class: 'activeuntil', min:`${formattedCurrentDate}` } },
         { type: 'label', text: 'Interval: ' },
-        { type: 'input', attributes: { type: 'text', placeholder: '0d hh:mm:ss', class: 'interval' } },
+        { type: 'input', attributes: { type: 'text', placeholder: '(dd)d (hh):(mm):(ss)', class: 'interval' } },
     ];
 
     // Container-Element erstellen
@@ -46,6 +48,7 @@ function createForm() {
     // Überprüfung des First Run-Datums
     const firstRunInput = document.querySelector('.firstRun');
     const activeuntilInput = document.querySelector('.activeuntil');
+    const intervalInput = document.querySelector('.interval')
 
     firstRunInput.addEventListener('change', function () {
         const selectedDateFirst = new Date(firstRunInput.value);
@@ -101,6 +104,24 @@ function createForm() {
             });
         }
     })
+
+    
+    intervalInput.addEventListener('change', function() {
+        const interval = intervalInput.value; // Leerzeichen entfernen
+        const regex = /^(\d+d\s)?(\d{1,2}:\d{1,2}:\d{1,2})$/; // Regulärer Ausdruck für das erwartete Format
+    
+        if (!regex.test(interval)) { // Überprüfen, ob das Format gültig ist
+            Swal.fire({
+                title: "Ungültige Eingabe!",
+                text: "Die Eingabe entspricht nicht dem erwarteten Format (dd)d (hh):(mm):(ss).",
+                icon: "error"
+            });
+            intervalInput.value=''; 
+        }
+        else{
+            console.log('all correct');
+        }
+    });
 
     // Button zum Speichern
     const saveButtonContainer = document.createElement('div');
